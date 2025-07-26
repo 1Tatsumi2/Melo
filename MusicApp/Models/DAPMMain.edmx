@@ -1,0 +1,1101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DAPMMainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Ma_User" />
+          </Key>
+          <Property Name="TaiKhoan" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MatKhau" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Role" Type="int" Nullable="false" />
+          <Property Name="Ma_User" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Ma_Album" />
+          </Key>
+          <Property Name="Ma_Album" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_Album" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="int" Nullable="false" />
+          <Property Name="Ngay_Phat_Hanh" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cate_Song">
+          <Key>
+            <PropertyRef Name="Ma_The_Loai" />
+            <PropertyRef Name="Ma_Bai_Hat" />
+          </Key>
+          <Property Name="ID_Cate_Song" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_The_Loai" Type="int" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Ma_The_Loai" />
+          </Key>
+          <Property Name="Ma_The_Loai" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_The_Loai" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="Ma_Binh_Luan" />
+          </Key>
+          <Property Name="Ma_Binh_Luan" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_User" Type="int" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+          <Property Name="So_Sao" Type="int" Nullable="false" />
+          <Property Name="Noi_Dung" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ngay_Binh_Luan" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="Ma_Lich_Su" />
+          </Key>
+          <Property Name="Ma_Lich_Su" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+          <Property Name="Ma_User" Type="int" Nullable="false" />
+          <Property Name="Ngay_Nghe" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LikedSongs">
+          <Key>
+            <PropertyRef Name="Ma_Yeu_Thich" />
+          </Key>
+          <Property Name="Ma_Yeu_Thich" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_User" Type="int" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PlayList">
+          <Key>
+            <PropertyRef Name="Ma_PlayList" />
+          </Key>
+          <Property Name="Ma_PlayList" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_PlayList" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Ma_User" Type="int" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ma_The_Loai" Type="int" />
+        </EntityType>
+        <EntityType Name="Singer">
+          <Key>
+            <PropertyRef Name="Ma_Ca_Si" />
+          </Key>
+          <Property Name="Ma_Ca_Si" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_Ca_Si" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Ngay_Sinh" Type="date" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="HinhAnh2" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Singer_Song">
+          <Key>
+            <PropertyRef Name="ID_Singer_Song" />
+          </Key>
+          <Property Name="ID_Singer_Song" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Song_Play">
+          <Key>
+            <PropertyRef Name="ID_Song_Play" />
+          </Key>
+          <Property Name="ID_Song_Play" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_PlayList" Type="int" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Songs">
+          <Key>
+            <PropertyRef Name="Ma_Bai_Hat" />
+          </Key>
+          <Property Name="Ma_Bai_Hat" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ten_Bai_Hat" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Thoi_Luong" Type="time" Precision="7" Nullable="false" />
+          <Property Name="HinhAnh" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MP3" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Video" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Ma_Album" Type="int" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Songs_Liked">
+          <Key>
+            <PropertyRef Name="ID_Songs_Liked" />
+          </Key>
+          <Property Name="ID_Songs_Liked" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ma_Yeu_Thich" Type="int" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Album__Ma_Ca_Si__3E52440B">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Album" Type="Self.Album" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Album">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cate_Song__Ma_Ba__5FB337D6">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Cate_Song" Type="Self.Cate_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Cate_Song">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cate_Song__Ma_Th__5EBF139D">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Cate_Song" Type="Self.Cate_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Principal>
+            <Dependent Role="Cate_Song">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__Ma_Bai__4CA06362">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__Ma_Use__4BAC3F29">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__History__Ma_Bai___5070F446">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__History__Ma_User__4F7CD00D">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikedSong__Ma_Ba__48CFD27E">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="LikedSongs" Type="Self.LikedSongs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="LikedSongs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikedSong__Ma_Us__47DBAE45">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="LikedSongs" Type="Self.LikedSongs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="LikedSongs">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayList__Ma_The__6E01572D">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="PlayList" Type="Self.PlayList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Principal>
+            <Dependent Role="PlayList">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayList__Ma_Use__3B75D760">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="PlayList" Type="Self.PlayList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="PlayList">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Singer_So__Ma_Ba__571DF1D5">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Singer_Song" Type="Self.Singer_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Singer_Song">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Singer_So__Ma_Ca__5812160E">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Singer_Song" Type="Self.Singer_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Singer_Song">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Song_Play__Ma_Ba__5BE2A6F2">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Song_Play" Type="Self.Song_Play" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Song_Play">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Song_Play__Ma_Pl__5AEE82B9">
+          <End Role="PlayList" Type="Self.PlayList" Multiplicity="1" />
+          <End Role="Song_Play" Type="Self.Song_Play" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayList">
+              <PropertyRef Name="Ma_PlayList" />
+            </Principal>
+            <Dependent Role="Song_Play">
+              <PropertyRef Name="Ma_PlayList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs__Ma_Album__4316F928">
+          <End Role="Album" Type="Self.Album" Multiplicity="1" />
+          <End Role="Songs" Type="Self.Songs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="Ma_Album" />
+            </Principal>
+            <Dependent Role="Songs">
+              <PropertyRef Name="Ma_Album" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs__Ma_Ca_Si__440B1D61">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Songs" Type="Self.Songs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Songs">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs_Lik__Ma_Ba__5441852A">
+          <End Role="Songs" Type="Self.Songs" Multiplicity="1" />
+          <End Role="Songs_Liked" Type="Self.Songs_Liked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Songs_Liked">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs_Lik__Ma_Ye__534D60F1">
+          <End Role="LikedSongs" Type="Self.LikedSongs" Multiplicity="1" />
+          <End Role="Songs_Liked" Type="Self.Songs_Liked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LikedSongs">
+              <PropertyRef Name="Ma_Yeu_Thich" />
+            </Principal>
+            <Dependent Role="Songs_Liked">
+              <PropertyRef Name="Ma_Yeu_Thich" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DAPMMainModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Album" EntityType="Self.Album" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cate_Song" EntityType="Self.Cate_Song" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="History" EntityType="Self.History" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LikedSongs" EntityType="Self.LikedSongs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayList" EntityType="Self.PlayList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Singer" EntityType="Self.Singer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Singer_Song" EntityType="Self.Singer_Song" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Song_Play" EntityType="Self.Song_Play" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Songs" EntityType="Self.Songs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Songs_Liked" EntityType="Self.Songs_Liked" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Album__Ma_Ca_Si__3E52440B" Association="Self.FK__Album__Ma_Ca_Si__3E52440B">
+            <End Role="Singer" EntitySet="Singer" />
+            <End Role="Album" EntitySet="Album" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cate_Song__Ma_Ba__5FB337D6" Association="Self.FK__Cate_Song__Ma_Ba__5FB337D6">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Cate_Song" EntitySet="Cate_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cate_Song__Ma_Th__5EBF139D" Association="Self.FK__Cate_Song__Ma_Th__5EBF139D">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Cate_Song" EntitySet="Cate_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__Ma_Bai__4CA06362" Association="Self.FK__Comments__Ma_Bai__4CA06362">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__Ma_Use__4BAC3F29" Association="Self.FK__Comments__Ma_Use__4BAC3F29">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__History__Ma_Bai___5070F446" Association="Self.FK__History__Ma_Bai___5070F446">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__History__Ma_User__4F7CD00D" Association="Self.FK__History__Ma_User__4F7CD00D">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="History" EntitySet="History" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikedSong__Ma_Ba__48CFD27E" Association="Self.FK__LikedSong__Ma_Ba__48CFD27E">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikedSong__Ma_Us__47DBAE45" Association="Self.FK__LikedSong__Ma_Us__47DBAE45">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayList__Ma_The__6E01572D" Association="Self.FK__PlayList__Ma_The__6E01572D">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="PlayList" EntitySet="PlayList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayList__Ma_Use__3B75D760" Association="Self.FK__PlayList__Ma_Use__3B75D760">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="PlayList" EntitySet="PlayList" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Singer_So__Ma_Ba__571DF1D5" Association="Self.FK__Singer_So__Ma_Ba__571DF1D5">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Singer_Song" EntitySet="Singer_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Singer_So__Ma_Ca__5812160E" Association="Self.FK__Singer_So__Ma_Ca__5812160E">
+            <End Role="Singer" EntitySet="Singer" />
+            <End Role="Singer_Song" EntitySet="Singer_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Song_Play__Ma_Ba__5BE2A6F2" Association="Self.FK__Song_Play__Ma_Ba__5BE2A6F2">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Song_Play" EntitySet="Song_Play" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Song_Play__Ma_Pl__5AEE82B9" Association="Self.FK__Song_Play__Ma_Pl__5AEE82B9">
+            <End Role="PlayList" EntitySet="PlayList" />
+            <End Role="Song_Play" EntitySet="Song_Play" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs__Ma_Album__4316F928" Association="Self.FK__Songs__Ma_Album__4316F928">
+            <End Role="Album" EntitySet="Album" />
+            <End Role="Songs" EntitySet="Songs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs__Ma_Ca_Si__440B1D61" Association="Self.FK__Songs__Ma_Ca_Si__440B1D61">
+            <End Role="Singer" EntitySet="Singer" />
+            <End Role="Songs" EntitySet="Songs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs_Lik__Ma_Ba__5441852A" Association="Self.FK__Songs_Lik__Ma_Ba__5441852A">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Songs_Liked" EntitySet="Songs_Liked" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs_Lik__Ma_Ye__534D60F1" Association="Self.FK__Songs_Lik__Ma_Ye__534D60F1">
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+            <End Role="Songs_Liked" EntitySet="Songs_Liked" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DAPMMainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Ma_User" />
+          </Key>
+          <Property Name="TaiKhoan" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <Property Name="Ma_User" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__Ma_Use__4BAC3F29" FromRole="Account" ToRole="Comments" />
+          <NavigationProperty Name="Histories" Relationship="Self.FK__History__Ma_User__4F7CD00D" FromRole="Account" ToRole="History" />
+          <NavigationProperty Name="LikedSongs" Relationship="Self.FK__LikedSong__Ma_Us__47DBAE45" FromRole="Account" ToRole="LikedSongs" />
+          <NavigationProperty Name="PlayLists" Relationship="Self.FK__PlayList__Ma_Use__3B75D760" FromRole="Account" ToRole="PlayList" />
+        </EntityType>
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="Ma_Album" />
+          </Key>
+          <Property Name="Ma_Album" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_Album" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="Int32" Nullable="false" />
+          <Property Name="Ngay_Phat_Hanh" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Singer" Relationship="Self.FK__Album__Ma_Ca_Si__3E52440B" FromRole="Album" ToRole="Singer" />
+          <NavigationProperty Name="Songs" Relationship="Self.FK__Songs__Ma_Album__4316F928" FromRole="Album" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="Cate_Song">
+          <Key>
+            <PropertyRef Name="Ma_The_Loai" />
+            <PropertyRef Name="Ma_Bai_Hat" />
+          </Key>
+          <Property Name="ID_Cate_Song" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_The_Loai" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Cate_Song__Ma_Ba__5FB337D6" FromRole="Cate_Song" ToRole="Songs" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Cate_Song__Ma_Th__5EBF139D" FromRole="Cate_Song" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Ma_The_Loai" />
+          </Key>
+          <Property Name="Ma_The_Loai" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_The_Loai" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cate_Song" Relationship="Self.FK__Cate_Song__Ma_Th__5EBF139D" FromRole="Category" ToRole="Cate_Song" />
+          <NavigationProperty Name="PlayLists" Relationship="DAPMMainModel.FK__PlayList__Ma_The__6E01572D" FromRole="Category" ToRole="PlayList" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Ma_Binh_Luan" />
+          </Key>
+          <Property Name="Ma_Binh_Luan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_User" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <Property Name="So_Sao" Type="Int32" Nullable="false" />
+          <Property Name="Noi_Dung" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ngay_Binh_Luan" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__Comments__Ma_Use__4BAC3F29" FromRole="Comments" ToRole="Account" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Comments__Ma_Bai__4CA06362" FromRole="Comments" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="History">
+          <Key>
+            <PropertyRef Name="Ma_Lich_Su" />
+          </Key>
+          <Property Name="Ma_Lich_Su" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <Property Name="Ma_User" Type="Int32" Nullable="false" />
+          <Property Name="Ngay_Nghe" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__History__Ma_User__4F7CD00D" FromRole="History" ToRole="Account" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__History__Ma_Bai___5070F446" FromRole="History" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="LikedSong">
+          <Key>
+            <PropertyRef Name="Ma_Yeu_Thich" />
+          </Key>
+          <Property Name="Ma_Yeu_Thich" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_User" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__LikedSong__Ma_Us__47DBAE45" FromRole="LikedSongs" ToRole="Account" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__LikedSong__Ma_Ba__48CFD27E" FromRole="LikedSongs" ToRole="Songs" />
+          <NavigationProperty Name="Songs_Liked" Relationship="Self.FK__Songs_Lik__Ma_Ye__534D60F1" FromRole="LikedSongs" ToRole="Songs_Liked" />
+        </EntityType>
+        <EntityType Name="PlayList">
+          <Key>
+            <PropertyRef Name="Ma_PlayList" />
+          </Key>
+          <Property Name="Ma_PlayList" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_PlayList" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ma_User" Type="Int32" Nullable="false" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK__PlayList__Ma_Use__3B75D760" FromRole="PlayList" ToRole="Account" />
+          <NavigationProperty Name="Song_Play" Relationship="Self.FK__Song_Play__Ma_Pl__5AEE82B9" FromRole="PlayList" ToRole="Song_Play" />
+          <Property Name="Ma_The_Loai" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="DAPMMainModel.FK__PlayList__Ma_The__6E01572D" FromRole="PlayList" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="Singer">
+          <Key>
+            <PropertyRef Name="Ma_Ca_Si" />
+          </Key>
+          <Property Name="Ma_Ca_Si" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_Ca_Si" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ngay_Sinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Albums" Relationship="Self.FK__Album__Ma_Ca_Si__3E52440B" FromRole="Singer" ToRole="Album" />
+          <NavigationProperty Name="Singer_Song" Relationship="Self.FK__Singer_So__Ma_Ca__5812160E" FromRole="Singer" ToRole="Singer_Song" />
+          <NavigationProperty Name="Songs" Relationship="Self.FK__Songs__Ma_Ca_Si__440B1D61" FromRole="Singer" ToRole="Songs" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HinhAnh2" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Singer_Song">
+          <Key>
+            <PropertyRef Name="ID_Singer_Song" />
+          </Key>
+          <Property Name="ID_Singer_Song" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Singer" Relationship="Self.FK__Singer_So__Ma_Ca__5812160E" FromRole="Singer_Song" ToRole="Singer" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Singer_So__Ma_Ba__571DF1D5" FromRole="Singer_Song" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="Song_Play">
+          <Key>
+            <PropertyRef Name="ID_Song_Play" />
+          </Key>
+          <Property Name="ID_Song_Play" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_PlayList" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PlayList" Relationship="Self.FK__Song_Play__Ma_Pl__5AEE82B9" FromRole="Song_Play" ToRole="PlayList" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Song_Play__Ma_Ba__5BE2A6F2" FromRole="Song_Play" ToRole="Songs" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="Ma_Bai_Hat" />
+          </Key>
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ten_Bai_Hat" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Thoi_Luong" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MP3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Video" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ma_Album" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Ca_Si" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Album" Relationship="Self.FK__Songs__Ma_Album__4316F928" FromRole="Songs" ToRole="Album" />
+          <NavigationProperty Name="Cate_Song" Relationship="Self.FK__Cate_Song__Ma_Ba__5FB337D6" FromRole="Songs" ToRole="Cate_Song" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__Ma_Bai__4CA06362" FromRole="Songs" ToRole="Comments" />
+          <NavigationProperty Name="Histories" Relationship="Self.FK__History__Ma_Bai___5070F446" FromRole="Songs" ToRole="History" />
+          <NavigationProperty Name="LikedSongs" Relationship="Self.FK__LikedSong__Ma_Ba__48CFD27E" FromRole="Songs" ToRole="LikedSongs" />
+          <NavigationProperty Name="Singer" Relationship="Self.FK__Songs__Ma_Ca_Si__440B1D61" FromRole="Songs" ToRole="Singer" />
+          <NavigationProperty Name="Singer_Song" Relationship="Self.FK__Singer_So__Ma_Ba__571DF1D5" FromRole="Songs" ToRole="Singer_Song" />
+          <NavigationProperty Name="Song_Play" Relationship="Self.FK__Song_Play__Ma_Ba__5BE2A6F2" FromRole="Songs" ToRole="Song_Play" />
+          <NavigationProperty Name="Songs_Liked" Relationship="Self.FK__Songs_Lik__Ma_Ba__5441852A" FromRole="Songs" ToRole="Songs_Liked" />
+        </EntityType>
+        <EntityType Name="Songs_Liked">
+          <Key>
+            <PropertyRef Name="ID_Songs_Liked" />
+          </Key>
+          <Property Name="ID_Songs_Liked" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ma_Yeu_Thich" Type="Int32" Nullable="false" />
+          <Property Name="Ma_Bai_Hat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="LikedSong" Relationship="Self.FK__Songs_Lik__Ma_Ye__534D60F1" FromRole="Songs_Liked" ToRole="LikedSongs" />
+          <NavigationProperty Name="Song" Relationship="Self.FK__Songs_Lik__Ma_Ba__5441852A" FromRole="Songs_Liked" ToRole="Songs" />
+        </EntityType>
+        <Association Name="FK__Comments__Ma_Use__4BAC3F29">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__History__Ma_User__4F7CD00D">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikedSong__Ma_Us__47DBAE45">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="LikedSongs" Type="Self.LikedSong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="LikedSongs">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayList__Ma_Use__3B75D760">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="PlayList" Type="Self.PlayList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="Ma_User" />
+            </Principal>
+            <Dependent Role="PlayList">
+              <PropertyRef Name="Ma_User" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Album__Ma_Ca_Si__3E52440B">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Album" Type="Self.Album" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Album">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs__Ma_Album__4316F928">
+          <End Role="Album" Type="Self.Album" Multiplicity="1" />
+          <End Role="Songs" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="Ma_Album" />
+            </Principal>
+            <Dependent Role="Songs">
+              <PropertyRef Name="Ma_Album" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cate_Song__Ma_Ba__5FB337D6">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Cate_Song" Type="Self.Cate_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Cate_Song">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cate_Song__Ma_Th__5EBF139D">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Cate_Song" Type="Self.Cate_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Principal>
+            <Dependent Role="Cate_Song">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__Ma_Bai__4CA06362">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__History__Ma_Bai___5070F446">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="History" Type="Self.History" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="History">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikedSong__Ma_Ba__48CFD27E">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="LikedSongs" Type="Self.LikedSong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="LikedSongs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs_Lik__Ma_Ye__534D60F1">
+          <End Role="LikedSongs" Type="Self.LikedSong" Multiplicity="1" />
+          <End Role="Songs_Liked" Type="Self.Songs_Liked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LikedSongs">
+              <PropertyRef Name="Ma_Yeu_Thich" />
+            </Principal>
+            <Dependent Role="Songs_Liked">
+              <PropertyRef Name="Ma_Yeu_Thich" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Song_Play__Ma_Pl__5AEE82B9">
+          <End Role="PlayList" Type="Self.PlayList" Multiplicity="1" />
+          <End Role="Song_Play" Type="Self.Song_Play" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayList">
+              <PropertyRef Name="Ma_PlayList" />
+            </Principal>
+            <Dependent Role="Song_Play">
+              <PropertyRef Name="Ma_PlayList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Singer_So__Ma_Ca__5812160E">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Singer_Song" Type="Self.Singer_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Singer_Song">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs__Ma_Ca_Si__440B1D61">
+          <End Role="Singer" Type="Self.Singer" Multiplicity="1" />
+          <End Role="Songs" Type="Self.Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Singer">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Principal>
+            <Dependent Role="Songs">
+              <PropertyRef Name="Ma_Ca_Si" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Singer_So__Ma_Ba__571DF1D5">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Singer_Song" Type="Self.Singer_Song" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Singer_Song">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Song_Play__Ma_Ba__5BE2A6F2">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Song_Play" Type="Self.Song_Play" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Song_Play">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Songs_Lik__Ma_Ba__5441852A">
+          <End Role="Songs" Type="Self.Song" Multiplicity="1" />
+          <End Role="Songs_Liked" Type="Self.Songs_Liked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Songs">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Principal>
+            <Dependent Role="Songs_Liked">
+              <PropertyRef Name="Ma_Bai_Hat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DAPMMainEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Albums" EntityType="Self.Album" />
+          <EntitySet Name="Cate_Song" EntityType="Self.Cate_Song" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Histories" EntityType="Self.History" />
+          <EntitySet Name="LikedSongs" EntityType="Self.LikedSong" />
+          <EntitySet Name="PlayLists" EntityType="Self.PlayList" />
+          <EntitySet Name="Singers" EntityType="Self.Singer" />
+          <EntitySet Name="Singer_Song" EntityType="Self.Singer_Song" />
+          <EntitySet Name="Song_Play" EntityType="Self.Song_Play" />
+          <EntitySet Name="Songs" EntityType="Self.Song" />
+          <EntitySet Name="Songs_Liked" EntityType="Self.Songs_Liked" />
+          <AssociationSet Name="FK__Comments__Ma_Use__4BAC3F29" Association="Self.FK__Comments__Ma_Use__4BAC3F29">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__History__Ma_User__4F7CD00D" Association="Self.FK__History__Ma_User__4F7CD00D">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikedSong__Ma_Us__47DBAE45" Association="Self.FK__LikedSong__Ma_Us__47DBAE45">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayList__Ma_Use__3B75D760" Association="Self.FK__PlayList__Ma_Use__3B75D760">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="PlayList" EntitySet="PlayLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Album__Ma_Ca_Si__3E52440B" Association="Self.FK__Album__Ma_Ca_Si__3E52440B">
+            <End Role="Singer" EntitySet="Singers" />
+            <End Role="Album" EntitySet="Albums" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs__Ma_Album__4316F928" Association="Self.FK__Songs__Ma_Album__4316F928">
+            <End Role="Album" EntitySet="Albums" />
+            <End Role="Songs" EntitySet="Songs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cate_Song__Ma_Ba__5FB337D6" Association="Self.FK__Cate_Song__Ma_Ba__5FB337D6">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Cate_Song" EntitySet="Cate_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cate_Song__Ma_Th__5EBF139D" Association="Self.FK__Cate_Song__Ma_Th__5EBF139D">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Cate_Song" EntitySet="Cate_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__Ma_Bai__4CA06362" Association="Self.FK__Comments__Ma_Bai__4CA06362">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__History__Ma_Bai___5070F446" Association="Self.FK__History__Ma_Bai___5070F446">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="History" EntitySet="Histories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikedSong__Ma_Ba__48CFD27E" Association="Self.FK__LikedSong__Ma_Ba__48CFD27E">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs_Lik__Ma_Ye__534D60F1" Association="Self.FK__Songs_Lik__Ma_Ye__534D60F1">
+            <End Role="LikedSongs" EntitySet="LikedSongs" />
+            <End Role="Songs_Liked" EntitySet="Songs_Liked" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Song_Play__Ma_Pl__5AEE82B9" Association="Self.FK__Song_Play__Ma_Pl__5AEE82B9">
+            <End Role="PlayList" EntitySet="PlayLists" />
+            <End Role="Song_Play" EntitySet="Song_Play" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Singer_So__Ma_Ca__5812160E" Association="Self.FK__Singer_So__Ma_Ca__5812160E">
+            <End Role="Singer" EntitySet="Singers" />
+            <End Role="Singer_Song" EntitySet="Singer_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs__Ma_Ca_Si__440B1D61" Association="Self.FK__Songs__Ma_Ca_Si__440B1D61">
+            <End Role="Singer" EntitySet="Singers" />
+            <End Role="Songs" EntitySet="Songs" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Singer_So__Ma_Ba__571DF1D5" Association="Self.FK__Singer_So__Ma_Ba__571DF1D5">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Singer_Song" EntitySet="Singer_Song" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Song_Play__Ma_Ba__5BE2A6F2" Association="Self.FK__Song_Play__Ma_Ba__5BE2A6F2">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Song_Play" EntitySet="Song_Play" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Songs_Lik__Ma_Ba__5441852A" Association="Self.FK__Songs_Lik__Ma_Ba__5441852A">
+            <End Role="Songs" EntitySet="Songs" />
+            <End Role="Songs_Liked" EntitySet="Songs_Liked" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayList__Ma_The__6E01572D" Association="DAPMMainModel.FK__PlayList__Ma_The__6E01572D">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="PlayList" EntitySet="PlayLists" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK__PlayList__Ma_The__6E01572D">
+          <End Type="DAPMMainModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="DAPMMainModel.PlayList" Role="PlayList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Principal>
+            <Dependent Role="PlayList">
+              <PropertyRef Name="Ma_The_Loai" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DAPMMainModelStoreContainer" CdmEntityContainer="DAPMMainEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="DAPMMainModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="TaiKhoan" ColumnName="TaiKhoan" />
+                <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Ma_User" ColumnName="Ma_User" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="DAPMMainModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Ma_Album" ColumnName="Ma_Album" />
+                <ScalarProperty Name="Ten_Album" ColumnName="Ten_Album" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="Ma_Ca_Si" ColumnName="Ma_Ca_Si" />
+                <ScalarProperty Name="Ngay_Phat_Hanh" ColumnName="Ngay_Phat_Hanh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cate_Song">
+            <EntityTypeMapping TypeName="DAPMMainModel.Cate_Song">
+              <MappingFragment StoreEntitySet="Cate_Song">
+                <ScalarProperty Name="ID_Cate_Song" ColumnName="ID_Cate_Song" />
+                <ScalarProperty Name="Ma_The_Loai" ColumnName="Ma_The_Loai" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="DAPMMainModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="Ma_The_Loai" ColumnName="Ma_The_Loai" />
+                <ScalarProperty Name="Ten_The_Loai" ColumnName="Ten_The_Loai" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="DAPMMainModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="Ma_Binh_Luan" ColumnName="Ma_Binh_Luan" />
+                <ScalarProperty Name="Ma_User" ColumnName="Ma_User" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+                <ScalarProperty Name="So_Sao" ColumnName="So_Sao" />
+                <ScalarProperty Name="Noi_Dung" ColumnName="Noi_Dung" />
+                <ScalarProperty Name="Ngay_Binh_Luan" ColumnName="Ngay_Binh_Luan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Histories">
+            <EntityTypeMapping TypeName="DAPMMainModel.History">
+              <MappingFragment StoreEntitySet="History">
+                <ScalarProperty Name="Ma_Lich_Su" ColumnName="Ma_Lich_Su" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+                <ScalarProperty Name="Ma_User" ColumnName="Ma_User" />
+                <ScalarProperty Name="Ngay_Nghe" ColumnName="Ngay_Nghe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LikedSongs">
+            <EntityTypeMapping TypeName="DAPMMainModel.LikedSong">
+              <MappingFragment StoreEntitySet="LikedSongs">
+                <ScalarProperty Name="Ma_Yeu_Thich" ColumnName="Ma_Yeu_Thich" />
+                <ScalarProperty Name="Ma_User" ColumnName="Ma_User" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayLists">
+            <EntityTypeMapping TypeName="DAPMMainModel.PlayList">
+              <MappingFragment StoreEntitySet="PlayList">
+                <ScalarProperty Name="Ma_The_Loai" ColumnName="Ma_The_Loai" />
+                <ScalarProperty Name="Ma_PlayList" ColumnName="Ma_PlayList" />
+                <ScalarProperty Name="Ten_PlayList" ColumnName="Ten_PlayList" />
+                <ScalarProperty Name="Ma_User" ColumnName="Ma_User" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Singers">
+            <EntityTypeMapping TypeName="DAPMMainModel.Singer">
+              <MappingFragment StoreEntitySet="Singer">
+                <ScalarProperty Name="HinhAnh2" ColumnName="HinhAnh2" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Ma_Ca_Si" ColumnName="Ma_Ca_Si" />
+                <ScalarProperty Name="Ten_Ca_Si" ColumnName="Ten_Ca_Si" />
+                <ScalarProperty Name="Ngay_Sinh" ColumnName="Ngay_Sinh" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Singer_Song">
+            <EntityTypeMapping TypeName="DAPMMainModel.Singer_Song">
+              <MappingFragment StoreEntitySet="Singer_Song">
+                <ScalarProperty Name="ID_Singer_Song" ColumnName="ID_Singer_Song" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+                <ScalarProperty Name="Ma_Ca_Si" ColumnName="Ma_Ca_Si" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Song_Play">
+            <EntityTypeMapping TypeName="DAPMMainModel.Song_Play">
+              <MappingFragment StoreEntitySet="Song_Play">
+                <ScalarProperty Name="ID_Song_Play" ColumnName="ID_Song_Play" />
+                <ScalarProperty Name="Ma_PlayList" ColumnName="Ma_PlayList" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Songs">
+            <EntityTypeMapping TypeName="DAPMMainModel.Song">
+              <MappingFragment StoreEntitySet="Songs">
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+                <ScalarProperty Name="Ten_Bai_Hat" ColumnName="Ten_Bai_Hat" />
+                <ScalarProperty Name="Thoi_Luong" ColumnName="Thoi_Luong" />
+                <ScalarProperty Name="HinhAnh" ColumnName="HinhAnh" />
+                <ScalarProperty Name="MP3" ColumnName="MP3" />
+                <ScalarProperty Name="Video" ColumnName="Video" />
+                <ScalarProperty Name="Ma_Album" ColumnName="Ma_Album" />
+                <ScalarProperty Name="Ma_Ca_Si" ColumnName="Ma_Ca_Si" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Songs_Liked">
+            <EntityTypeMapping TypeName="DAPMMainModel.Songs_Liked">
+              <MappingFragment StoreEntitySet="Songs_Liked">
+                <ScalarProperty Name="ID_Songs_Liked" ColumnName="ID_Songs_Liked" />
+                <ScalarProperty Name="Ma_Yeu_Thich" ColumnName="Ma_Yeu_Thich" />
+                <ScalarProperty Name="Ma_Bai_Hat" ColumnName="Ma_Bai_Hat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

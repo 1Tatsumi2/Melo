@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MusicApp.Models.Song>
+@{
+    ViewBag.Title = "RemoveSingerFromSong";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RemoveSingerFromSong</h2>
+<h2>Danh sách bài hát và ca sĩ</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten_Bai_Hat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ma_Album)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Thoi_Luong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Singer_Song)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten_Bai_Hat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Album.Ten_Album)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thoi_Luong)
+                </td>
+                <td>
+                    @foreach (var singer in item.Singer_Song)
+                    {
+                        <span>@singer.Singer.Ten_Ca_Si</span>
+                        @Html.ActionLink("Remove", "RemoveSingerFromSong", new { songId = item.Ma_Bai_Hat, singerId = singer.Ma_Ca_Si }, new { @class = "btn btn-danger btn-sm" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MusicApp.Models.Album>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Ten_Album)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ngay_Phat_Hanh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Singer.Ten_Ca_Si)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ten_Album)
+        </td>
+        <td>
+            <img src="@item.HinhAnh" alt="Album Image" style="width:100px; height:100px;object-fit:cover" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ngay_Phat_Hanh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Singer.Ten_Ca_Si)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Ma_Album }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Ma_Album }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Ma_Album })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,174 @@
+﻿@model MusicApp.Models.Account
+
+@{
+    ViewBag.Title = "SignUp";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp for Melodify</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-image: url('/Images/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Đảm bảo hình nền cố định khi cuộn */
+            background-position: center; /* Canh giữa hình nền */
+            height: 100vh; /* Chiều cao bằng viewport để phủ đầy màn hình */
+            margin: 0;
+        }
+
+
+        form {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.15);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+            padding: 50px 35px;
+        }
+
+        .form-group {
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"], input[type="file"] {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.07);
+            border-radius: 3px;
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: 300;
+        }
+
+        .btn-primary {
+            margin-top: 20px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.13);
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left:3px;
+        }
+
+            .btn-primary:hover {
+                background-color: white;
+            }
+
+        .img-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .sign-in-link {
+            color: #cc00cc;
+            text-decoration: none;
+        }
+
+            .sign-in-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+    @using (Html.BeginForm("SignUp", "SignInUp", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <h2 style="text-align:center;margin-top:230px">SignUp for Melodify</h2>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaiKhoan)
+                @Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TaiKhoan, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email)
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MatKhau)
+                @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NhapLaiMatKhau)
+                @Html.EditorFor(model => model.NhapLaiMatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NhapLaiMatKhau, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName)
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HinhAnh)
+                <input type="file" name="HinhAnh" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+
+                <div class="text-center">
+                    <img id="preview" src="~/Images/default-avatar.jpg" alt="Image Preview" class="img-circle" />
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="submit-container">
+                    <input type="submit" value="Sign Up" class="btn btn-primary" />
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <p>
+                    Already have an account?
+                    <a href="@Url.Action("Login", "SignInUp")" class="sign-in-link">Log in here</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>

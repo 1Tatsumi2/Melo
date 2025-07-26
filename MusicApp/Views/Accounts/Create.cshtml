@@ -1,0 +1,137 @@
+﻿@model MusicApp.Models.Account
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .img-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* Tạo hình tròn */
+        object-fit: cover; /* Đảm bảo ảnh được cắt phù hợp */
+        border: 2px solid #fff; /* Thêm viền trắng */
+        margin-top: 10px; /* Khoảng cách phía trên */
+    }
+
+    .submit-container {
+        border: 2px solid #ccc; /* Màu viền của khung */
+        padding: 10px; /* Khoảng cách bên trong khung */
+        border-radius: 8px; /* Bo góc khung */
+        display: inline-block; /* Giúp khung không chiếm toàn bộ chiều rộng */
+    }
+
+    .text-center {
+        text-align: center; /* Căn giữa nội dung trong khung */
+    }
+</style>
+
+<h2> Create </h2>
+<body>
+
+    @using (Html.BeginForm("Create", "Accounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaiKhoan, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TaiKhoan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NhapLaiMatKhau, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NhapLaiMatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NhapLaiMatKhau, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!-- Thêm input để chọn tệp hình ảnh -->
+                <input type="file" name="HinhAnh" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+
+                <!-- Khu vực để hiển thị ảnh đã chọn -->
+                <div>
+                    <img id="preview" src="~/Images/default-avatar.jpg" alt="Image Preview" class="img-circle" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <div class="col-md-offset-2 col-md-10">
+                <label style="margin-left:200px;margin-bottom:15px">@ViewBag.Notification</label>
+            </div>
+        </div>
+
+
+        <div class="form-group text-center">
+            <div class="submit-container">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+
+
+    </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result; // Hiển thị ảnh đã chọn
+            };
+            reader.readAsDataURL(event.target.files[0]); // Đọc file ảnh
+        }
+    </script>
+
+</body>
+
+

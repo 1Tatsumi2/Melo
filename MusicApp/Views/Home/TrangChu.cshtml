@@ -1,0 +1,337 @@
+﻿@model IEnumerable<MusicApp.Models.PlayListDetailViewModel>
+@{
+    ViewBag.Title = "TrangChu";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<head>
+    <style>
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Đặt chiều cao của body */
+            background-color: #f0f0f0; /* Màu nền cho toàn bộ trang */
+        }
+
+        .right {
+            width: 72%;
+            background-color: #121212; /* Màu nền cho khung phải */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex;
+            flex-direction: column; /* Bố cục theo cột */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+            overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+        }
+
+        .main-header {
+            display: flex; /* Sử dụng Flexbox để tạo hàng */
+            flex-direction: column; /* Đặt hướng thành cột */
+            align-items: flex-start; /* Căn trái cho các phần tử */
+            gap: 15px;
+        }
+        /* Phần tiêu đề và các nút lọc */
+        .header {
+            padding: 15px 0px 0px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background-color: #333333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .filter-btn.active {
+                background-color: white;
+                color: black;
+            }
+
+            .filter-btn:hover {
+                background-color: #808080;
+            }
+
+        /* Danh sách các playlist dạng hàng */
+        .playlist-row {
+            display: grid; /* Sử dụng grid để bố trí */
+            grid-template-columns: repeat(4, 1fr); /* Chia thành 4 cột */
+            gap: 10px; /* Khoảng cách giữa các thẻ */
+            padding: 0px 15px; /* Thêm padding để không sát vào cạnh */
+            max-height: calc(2 * 150px + 10px); /* Chiều cao tối đa cho 2 dòng, điều chỉnh theo chiều cao thẻ */
+            overflow: hidden; /* Ẩn nội dung nếu vượt quá chiều cao */
+            transition: grid-template-columns 0.1s ease; /* Hiệu ứng chuyển đổi khi thay đổi layout */
+        }
+
+        .right.shrink .playlist-row {
+            grid-template-columns: repeat(2, 1fr); /* Giảm xuống còn 2 cột */
+        }
+
+        /* Thẻ playlist nhỏ */
+        .playlist-card {
+            background-color: #333333;
+            border-radius: 8px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: start; /* Canh trái nội dung */
+            cursor: pointer;
+            transition: background-color 0.5s ease;
+            gap: 3px; /* Khoảng cách giữa hình ảnh và văn bản */
+            overflow: hidden; /* Đảm bảo không có tràn nội dung */
+            font-weight: bold;
+            font-size: 13.5px;
+            font-family: Arial;
+            color: white; /* Màu chữ trắng */
+            text-decoration: none;
+            position: relative; /* Để có thể đặt nút "Play" tuyệt đối bên phải */
+        }
+
+            .playlist-card img {
+                width: 20%; /* Hình ảnh chiếm 20% chiều rộng */
+                height: 100%; /* Hình ảnh chiếm toàn bộ chiều cao của thẻ */
+                object-fit: cover; /* Giữ tỉ lệ ảnh hợp lý */
+                border-radius: 8px 0 0 8px; /* Bo góc chỉ bên trái */
+                margin-right: 0; /* Đảm bảo không có khoảng cách bên phải ảnh */
+            }
+
+            .playlist-card span {
+                flex: 1; /* Để văn bản chiếm không gian còn lại */
+                text-align: left; /* Canh trái văn bản */
+                white-space: normal; /* Cho phép văn bản xuống dòng */
+                overflow: hidden; /* Ẩn nếu văn bản quá dài */
+                text-overflow: clip; /* Không hiển thị dấu "..." */
+                line-height: 1.2; /* Chiều cao dòng */
+                padding: 0 5px; /* Thêm padding nếu cần để văn bản không sát quá vào viền */
+                margin-right: 7px;
+            }
+
+            .playlist-card:hover {
+                background-color: #808080;
+            }
+
+        .play-button {
+            position: absolute;
+            right: 10px; /* Nút nằm ở bên phải */
+            background-color: #ff99ff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0; /* Ẩn nút khi không hover */
+            transition: opacity 0s ease; /* Không có độ trễ */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bóng đổ */
+            animation: pulse 2s infinite; /* Thêm hiệu ứng hoạt ảnh */
+        }
+
+            .play-button i {
+                color: #404040;
+                font-size: 16px; /* Kích thước icon play */
+            }
+
+        .playlist-card:hover .play-button {
+            opacity: 1; /* Hiện nút khi hover ngay lập tức */
+        }
+
+        .playlist-card:not(:hover) .play-button {
+            opacity: 0; /* Ẩn ngay lập tức khi rời chuột */
+        }
+
+
+
+
+        /* Tiêu đề cho từng mục */
+        .section-title {
+            font-size: 25px;
+            margin: 15px 0 -25px 15px;
+            font-weight: bold;
+        }
+
+        /* Container của playlist có cuộn ngang */
+        .playlist-grid-container {
+            position: relative;
+            padding: 10px 0;
+            width: 100%; /* Giữ độ rộng của grid full màn hình */
+        }
+
+            .playlist-grid-container:hover .carousel-button {
+                opacity: 1; /* Hiển thị khi hover */
+            }
+
+        /* Sử dụng flex cho cuộn ngang */
+        .playlist-grid {
+            display: flex;
+            gap: 5px; /* Khoảng cách giữa các playlist */
+            overflow-x: auto; /* Cuộn ngang */
+            scroll-snap-type: x mandatory; /* Snap vào playlist khi cuộn */
+        }
+
+            /* Ẩn scrollbar ngang (nếu không cần thiết) */
+            .playlist-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+        /* Giữ nguyên thiết kế playlist như yêu cầu */
+        .playlist-card.large {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: transparent;
+            padding: 10px 10px 5px 10px;
+            height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 15px;
+            transition: background-color 0.1s ease;
+            cursor: pointer;
+            flex: 0 0 calc((100% - 75px) / 5); /* Chia đều cho 5 phần */
+            scroll-snap-align: start; /* Bám vào đầu khi cuộn */
+        }
+
+            .playlist-card.large:hover {
+                background-color: rgb(38, 38, 38);
+            }
+
+            /* Căn chỉnh hình ảnh trong playlist */
+            .playlist-card.large img {
+                width: 100%;
+                height: 75%;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+        /* Nút điều hướng trái/phải */
+        .carousel-button {
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            opacity: 0; /* Bắt đầu với opacity 0 */
+            transition: opacity 0.3s; /* Hiệu ứng mờ khi hiển thị */
+        }
+
+            .carousel-button.left {
+                left: 10px;
+            }
+
+            .carousel-button.right {
+                right: 10px;
+            }
+
+            .carousel-button:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+    </style>
+</head>
+<body style="font-family:Roboto">
+    <div class="main-header">
+        <div class="header">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Music</button>
+            <button class="filter-btn">Podcasts</button>
+        </div>
+        <div class="playlist-row">
+            @if (ViewBag.Playlists != null)
+            {
+                foreach (var playlist in ViewBag.Playlists)
+                {
+                    <a style="text-decoration:none" href="@Url.Action("PlayListDetail", "Home", new { id = playlist.Ma_PlayList })">
+                        <div class="playlist-card">
+                            <img src="@playlist.HinhAnh" alt="Playlist Image" />
+                            <span>@playlist.Ten_PlayList</span>
+                            <div class="play-button">
+                                <i class="fa fa-play"></i> <!-- Icon của nút Play -->
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <p>Không có playlist nào để hiển thị.</p>
+            }
+        </div>
+    </div>
+
+    @if (Session["TaiKhoan"] != null)
+    {
+        <h2 class="section-title">Made for @Session["UserName"]</h2>
+        <div class="playlist-grid-container" data-type="user-playlists">
+            <button class="carousel-button left" onclick="scrollLeft(this)">&#9664;</button>
+            <div class="playlist-grid">
+                @foreach (var playlist in ViewBag.CategoryPlaylists)
+                {
+                    <a style="text-decoration:none" href="@Url.Action("PlayListDetail", "Home", new { id = playlist.Ma_PlayList })">
+                        <div class="playlist-card large">
+                            <img src="@playlist.HinhAnh" alt="@playlist.Ten_PlayList" />
+                            <span>@playlist.Ten_PlayList</span>
+                        </div>
+                    </a>
+                }
+            </div>
+
+            <button class="carousel-button right" onclick="scrollRight(this)">&#9654;</button>
+        </div>
+    }
+    else
+    {
+
+    }
+    <h2 class="section-title">Top Mixes</h2>
+    <div class="playlist-grid-container" data-type="top-mixes">
+        <button class="carousel-button left" onclick="scrollLeftButton(this)">&#9664;</button>
+        <div class="playlist-grid">
+            @foreach (var playlist in ViewBag.TopMixesPlaylists)
+            {
+                <a href="@Url.Action("PlayListDetail", "Home", new { id = playlist.Ma_PlayList })" style="text-decoration: none;">
+                    <div class="playlist-card large">
+                        <img src="@playlist.HinhAnh" alt="@playlist.Ten_PlayList" />
+                        <span>@playlist.Ten_PlayList</span>
+                    </div>
+                </a>
+            }
+        </div>
+        <button class="carousel-button right" onclick="scrollRightButton(this)">&#9654;</button>
+    </div>
+
+    <h2 class="section-title">Popular Radio</h2>
+    <div class="playlist-grid-container">
+        <button class="carousel-button left" onclick="scrollLeftButton(this)">&#9664;</button>
+        <div class="playlist-grid">
+            @foreach (var playlist in ViewBag.PopularRadioPlaylists)
+            {
+                <a href="@Url.Action("PlayListDetail", "Home", new { id = playlist.Ma_PlayList })" style="text-decoration: none;">
+                    <div class="playlist-card large">
+                        <img src="@playlist.HinhAnh" alt="@playlist.Ten_PlayList" />
+                        <span>@playlist.Ten_PlayList</span>
+                    </div>
+                </a>
+            }
+        </div>
+        <button class="carousel-button right" onclick="scrollRightButton(this)">&#9654;</button>
+    </div>
+
+
+</body>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="a49a10ff278e47e684b4facb0df1bd37" Name="Diagram1" ZoomLevel="85">
+        <EntityTypeShape EntityType="DAPMMainModel.Account" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Album" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Cate_Song" Width="1.5" PointX="7.5" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Category" Width="1.5" PointX="2.75" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Comment" Width="1.5" PointX="7.5" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.History" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.LikedSong" Width="1.5" PointX="10.5" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.PlayList" Width="1.5" PointX="8.25" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Singer" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Singer_Song" Width="1.5" PointX="10.5" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Song_Play" Width="1.5" PointX="10.5" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Song" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DAPMMainModel.Songs_Liked" Width="1.5" PointX="12.75" PointY="9" IsExpanded="true" />
+        <AssociationConnector Association="DAPMMainModel.FK__Comments__Ma_Use__4BAC3F29" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__History__Ma_User__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__LikedSong__Ma_Us__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__PlayList__Ma_Use__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Album__Ma_Ca_Si__3E52440B" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Songs__Ma_Album__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Cate_Song__Ma_Ba__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Cate_Song__Ma_Th__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Comments__Ma_Bai__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__History__Ma_Bai___5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__LikedSong__Ma_Ba__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Songs_Lik__Ma_Ye__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Song_Play__Ma_Pl__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Singer_So__Ma_Ca__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Songs__Ma_Ca_Si__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Singer_So__Ma_Ba__571DF1D5" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Song_Play__Ma_Ba__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__Songs_Lik__Ma_Ba__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="DAPMMainModel.FK__PlayList__Ma_The__6E01572D" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

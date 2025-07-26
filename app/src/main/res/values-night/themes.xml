@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MusicApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+    <style name="SplashTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary </item>
+    </style>
+
+    <style name="ButtonGradient" parent="TextAppearance.AppCompat.Button">
+        <item name="colorPrimary">@null</item>
+        <item name="colorPrimaryVariant">@null</item>
+    </style>
+</resources>

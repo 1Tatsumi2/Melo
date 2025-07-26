@@ -1,0 +1,101 @@
+﻿@model MusicApp.Models.Album
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .img-square {
+        width: 150px;
+        height: 150px;
+        object-fit: cover; /* Đảm bảo ảnh được cắt phù hợp */
+        border: 2px solid #fff; /* Thêm viền trắng */
+        margin-top: 10px; /* Khoảng cách phía trên */
+    }
+
+    .submit-container {
+        border: 2px solid #ccc; /* Màu viền của khung */
+        padding: 10px; /* Khoảng cách bên trong khung */
+        border-radius: 8px; /* Bo góc khung */
+        display: inline-block; /* Giúp khung không chiếm toàn bộ chiều rộng */
+    }
+
+    .text-center {
+        text-align: center; /* Căn giữa nội dung trong khung */
+    }
+</style>
+<h2>Edit</h2>
+<body>
+    @using (Html.BeginForm("Edit", "Albums", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Album</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Ma_Album)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ten_Album, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Ten_Album, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ten_Album, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <!-- Thêm input để chọn tệp hình ảnh -->
+                    <input type="file" name="HinhAnh" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                    @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+
+                    <!-- Khu vực để hiển thị ảnh đã chọn -->
+                    <div>
+                        <img id="preview" src="~/Images/default-avatar.jpg" alt="Image Preview" class="img-square" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ma_Ca_Si, "Ma_Ca_Si", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("Ma_Ca_Si", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Ma_Ca_Si, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ngay_Phat_Hanh, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Ngay_Phat_Hanh, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Ngay_Phat_Hanh, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div style="margin-top:50px" class="form-group text-center">
+                <div class="submit-container">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+    <div style="margin-top:50px" class="form-group text-center">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result; // Hiển thị ảnh đã chọn
+            };
+            reader.readAsDataURL(event.target.files[0]); // Đọc file ảnh
+        }
+
+    </script>
+</body>

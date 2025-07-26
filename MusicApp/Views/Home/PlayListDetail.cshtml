@@ -1,0 +1,906 @@
+﻿@model MusicApp.Models.PlayListDetailViewModel
+@{
+    ViewBag.Title = "PlayListDetail";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;1000&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+
+
+    <style>
+        .right {
+            width: 72%;
+            background-color: #121212; /* Màu nền cho khung phải */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex;
+            flex-direction: column; /* Bố cục theo cột */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+            overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+        }
+
+        .header {
+            position: relative;
+            padding: 33px 20px 20px 20px;
+            text-align: left;
+            border-radius: 10px 10px 0 0; /* Bo góc cho phần đầu */
+            box-shadow: 0 0 20px rgba(162, 120, 185, 0.5);
+            color: white; /* Đặt màu chữ thành trắng */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Màu tối với độ mờ 50% */
+            border-radius: 10px 10px 0 0; /* Bo góc để phù hợp với header */
+            z-index: 0; /* Đảm bảo lớp phủ nằm dưới nội dung */
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px; /* Kéo pseudo-element ra dưới */
+            left: 0;
+            top: 100%;
+            width: 100%;
+            height: 180px; /* Độ dày của bóng đổ */
+            border-radius: 0 0 10px 10px; /* Bo góc dưới để mượt hơn */
+            pointer-events: none;
+            background: linear-gradient(to bottom, var(--after-bg, rgba(162, 120, 185, 0.0000005)), rgba(162, 120, 185, 0)); /* Mờ dần từ trên xuống */
+        }
+
+        .header-content {
+            display: flex; /* Sử dụng Flexbox */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            position: relative; /* Để nội dung nằm trên lớp phủ */
+            z-index: 1; /* Đảm bảo nội dung hiển thị trên lớp phủ */
+        }
+
+        .playlistAvatar-image {
+            width: 155px; /* Đặt kích thước cho hình ảnh */
+            height: 155px; /* Đảm bảo hình ảnh có tỷ lệ chính xác */
+            margin-right: 20px; /* Khoảng cách giữa hình ảnh và chữ */
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Thêm bóng đổ xung quanh hình ảnh */
+            object-fit:cover;
+        }
+
+        .playlistAvatar-info h1 {
+            margin: 0; /* Bỏ khoảng cách cho tiêu đề */
+            font-family: "Montserrat", sans-serif;
+            font-size: 4em;
+            font-weight: 700; /* Sử dụng trọng số đậm */
+        }
+
+        .playlistAvatar-info p {
+            margin: 3px 0; /* Khoảng cách cho các đoạn chữ */
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .icon-container {
+            display: flex; /* Sử dụng flexbox để căn các icon ngang hàng */
+            justify-content: flex-start;
+            padding: 15px;
+            margin-top: -20px;
+            gap: 15px;
+        }
+
+
+        .play-button {
+            position: relative;
+            background-color: #ff99ff;
+            margin-left: 5px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Bóng đổ */
+            transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; /* Thêm hiệu ứng chuyển động */
+        }
+
+            .play-button i {
+                color: black;
+                font-size: 25px;
+                transition: color 0.2s ease;
+            }
+
+            .play-button:hover {
+                background-color: #ffb3ff; /* Màu sáng hơn khi hover */
+                transform: scale(1.1); /* Tăng kích thước lên 1.1 lần khi hover */
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Tăng bóng đổ khi hover */
+            }
+
+                .play-button:hover i {
+                    color: black; /* Để màu icon không thay đổi khi hover */
+                }
+
+        .add-button {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .add-button img {
+                width: 35px; /* Thay đổi kích thước theo ý muốn */
+                height: 35px; /* Điều chỉnh chiều cao nếu cần */
+                cursor: pointer; /* Thêm hiệu ứng con trỏ khi di chuột qua */
+                transition: filter 0.2s ease;
+            }
+
+
+        .more-button {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: -10px;
+        }
+
+            .more-button img {
+                width: 30px; /* Thay đổi kích thước theo ý muốn */
+                height: 30px; /* Điều chỉnh chiều cao nếu cần */
+                cursor: pointer; /* Thêm hiệu ứng con trỏ khi di chuột qua */
+                transition: filter 0.2s ease;
+            }
+
+            .add-button:hover img, .more-button:hover img {
+                filter: brightness(2) invert(1); /* Chuyển màu sang trắng khi hover */
+            }
+
+        /*.playlist-card:hover .play-button {
+            opacity: 1;*/ /* Hiện nút khi hover ngay lập tức */
+        /*}
+
+        .playlist-card:not(:hover) .play-button {
+            opacity: 0;*/ /* Ẩn ngay lập tức khi rời chuột */
+        /*}*/
+        .song-list {
+            border-radius: 0 0 10px 10px; /* Bo góc cho phần dưới */
+            position: relative;
+            z-index: 0; /* Đảm bảo nó nằm dưới pseudo-element của header */
+            margin-top: -20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Gộp các viền của ô lại */
+            border: none;
+            margin-bottom: 40px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left; /* Canh trái cho chữ */
+            border-bottom: 1px solid #484848; /* Viền dưới cho mỗi hàng */
+            border: none;
+        }
+
+        td {
+            position: relative;
+            color: white;
+        }
+
+        tbody tr {
+            position: relative; /* Để có thể định vị mũi tên */
+        }
+
+            tbody tr:hover {
+                background-color: #4D4D4D; /* Đổi màu hàng khi hover */
+            }
+
+                tbody tr:hover .singer-name,
+                tbody tr:hover .album-name,
+                tbody tr:hover .ThoiLuong-name {
+                    color: white !important;
+                }
+
+            .singer-name a:hover {
+                text-decoration: underline !important; /* Gạch chân khi hover */
+            }
+
+        .album-name a:hover {
+            text-decoration: underline !important; /* Gạch chân khi hover */
+        }
+
+        .play-icon {
+            display: none; /* Ẩn mũi tên mặc định */
+            color: white; /* Màu mũi tên */
+            font-size: 1.2em; /* Kích thước mũi tên */
+            position: absolute; /* Định vị mũi tên */
+            right: 0;
+            top: 50%; /* Giữa hàng */
+            transform: translateY(-50%); /* Căn giữa mũi tên theo chiều dọc */
+            cursor: default;
+        }
+
+        .song-list tbody tr:hover .play-icon {
+            display: inline; /* Hiện biểu tượng mũi tên khi hover */
+        }
+
+        tbody tr:hover .play-icon {
+            display: inline; /* Hiện mũi tên khi hover */
+        }
+
+        .number {
+            display: inline-block; /* Hiển thị số thứ tự */
+            color: white; /* Màu số thứ tự */
+            position: absolute;
+            right: 10px; /* Canh phải */
+            top: 50%; /* Giữa hàng */
+            transform: translateY(-50%); /* Căn giữa theo chiều dọc */
+            font-size: 16px;
+        }
+
+        tbody tr:hover .number {
+            display: none; /* Ẩn số thứ tự khi hover */
+        }
+
+        .audio-visualizer {
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 20px; /* Điều chỉnh kích thước visualizer */
+            height: 30px; /* Điều chỉnh kích thước visualizer */
+            position: absolute;
+            top: 40%;
+            right: 0px; /* Canh phải, cùng vị trí với số thứ tự */
+            transform: translateY(-50%);
+        }
+
+            .audio-visualizer .bar {
+                width: 3px;
+                background-color: #ff99ff;
+                animation: bounce 1s infinite;
+            }
+
+                .audio-visualizer .bar:nth-child(1) {
+                    animation-delay: 0.2s;
+                }
+
+                .audio-visualizer .bar:nth-child(2) {
+                    animation-delay: 0.5s;
+                }
+
+                .audio-visualizer .bar:nth-child(3) {
+                    animation-delay: 0.8s;
+                }
+
+                .audio-visualizer .bar:nth-child(4) {
+                    animation-delay: 0.3s;
+                }
+
+        @@keyframes bounce {
+            0%, 100% {
+                height: 10px;
+            }
+
+            50% {
+                height: 20px;
+            }
+        }
+    </style>
+    <title>Playlist Detail</title>
+</head>
+<body style="font-family:Roboto">
+    <div class="header">
+        <div class="header-content">
+            <img src="@Url.Content(Model.HinhAnh)" alt="Playlist Image" class="playlistAvatar-image" />
+            <div class="playlistAvatar-info">
+                <p>Playlist</p>
+                <h1>@Model.Ten_PlayList</h1>
+                <p style="color: #cccccc ">With @ViewBag.SingersDisplay</p>
+                <p style="color: #cccccc ">
+                    @Model.SoLuongBaiHat songs • about @(Model.ThoiLuongTongCong.TotalHours.ToString("0")) min @(Model.ThoiLuongTongCong.Minutes) sec
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="icon-container">
+        <div class="play-button" onclick="togglePlay()">
+            <i class="fa fa-play" id="playIcon"></i> <!-- Icon của nút Play -->
+        </div>
+        <div class="add-button">
+            <img src="~/Images/icons/add_circle.png" alt="Add Button" />
+        </div>
+        <div class="more-button">
+            <img src="~/Images/icons/more.png" alt="More Button" />
+        </div>
+    </div>
+
+    <div class="song-list">
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:right">#</th>
+                    <th>Tittle</th>
+                    <th>Album</th>
+                    <th>Date added</th>
+                    <th style="text-align:center">Thời lượng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Songs.Count; i++)
+                {
+                    <tr style="font-size: 0.9em; line-height: 1.2;" onclick="playSong(this)">
+                        <td style="text-align:right">
+                            <span class="play-icon" data-song="@Model.Songs[i].MP3" data-index="@i" style="display:inline;">&#9654;</span>
+                            <span style="right:0" class="number"> @(i + 1)</span>
+                            <div class="audio-visualizer" id="visualizer-@i" style="display:none;">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <img src="@Model.Songs[i].HinhAnh" alt="@Model.Songs[i].Ten_Bai_Hat" style="width: 50px; height: 50px; margin-right: 10px; object-fit:cover" />
+                                <div>
+                                    <div>@Model.Songs[i].Ten_Bai_Hat</div>
+                                    <div class="singer-name" style="font-size: 1em; color: #b3b3b3; margin-top: 5px;">
+                                        @* Lặp qua danh sách ca sĩ và tạo liên kết cho từng ca sĩ *@
+                                        @foreach (var singerSong in Model.Songs[i].Singer_Song) // Lấy danh sách ca sĩ cho bài hát hiện tại
+                                        {
+                                            <a href="@Url.Action("SingerDetail", "Home", new { id = singerSong.Ma_Ca_Si })" class="singer-link" style="text-decoration: none; color: inherit;">
+                                                @singerSong.Singer.Ten_Ca_Si
+                                            </a>
+                                            @* Thêm dấu phẩy nếu có nhiều ca sĩ *@
+                                            if (singerSong != Model.Songs[i].Singer_Song.Last())
+                                            {
+                                                <span>, </span>
+                                            }
+                                        }
+                                    </div>
+                                    <div class="source-video" style="display: none;">@Model.Songs[i].Video</div>
+                                    <div class="source-artist-image" style="display: none;">@Model.Songs[i].ArtistImage</div>
+                                    <div class="source-artist-description" style="display:none;">@Model.Songs[i].Description</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="album-name" style="font-size: 1em; color: #b3b3b3;">
+                            <a href="@Url.Action("AlbumDetail", "Home", new { id = Model.Songs[i].Ma_Album })" style="text-decoration: none; color: inherit;">
+                                @Model.Songs[i].Ten_Album
+                            </a>
+                        </td>
+
+                        <td></td>
+                        <td class="ThoiLuong-name" style="font-size: 1em; color: #b3b3b3;text-align:center">
+                            @(Model.Songs[i].Thoi_Luong.ToString(@"hh\:mm\:ss").Substring(0, 5))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+        <audio id="audioPlayer" controls style="display:none;"></audio>
+
+    </div>
+
+    <script>
+        var currentPlaying = null; // Bài hát hiện tại đang phát
+        var audioPlayer = document.getElementById('audioPlayer'); // Audio player
+        var playIcon = document.getElementById('playIcon'); // Biểu tượng play/pause
+        var isPlaying = false; // Biến toàn cục để theo dõi trạng thái phát
+        let isShuffling = false; // Trạng thái của shuffle
+        let isLooping = false; // Trạng thái của loop
+
+        window.addEventListener("load", initializeSongIcons);
+        // Hàm để khởi tạo trạng thái ban đầu
+        function initializeSongIcons() {
+            console.log('Khởi tạo biểu tượng bài hát ban đầu');
+            document.querySelectorAll('.play-icon').forEach(function (playIcon) {
+                playIcon.style.display = 'none'; // Ẩn tất cả biểu tượng mũi tên
+            });
+
+            document.querySelectorAll('.number').forEach(function (number) {
+                number.style.display = 'inline'; // Hiện tất cả số thứ tự
+            });
+
+            document.querySelectorAll('.audio-visualizer').forEach(function (visualizer) {
+                visualizer.style.display = 'none'; // Ẩn tất cả visualizer
+            });
+        }
+        //console.log('playIcon.innerHTML', playIcon.innerHTML)
+
+        // Gọi hàm khởi tạo khi trang tải
+        
+
+        function playSong(element) {
+            var songUrl = element.querySelector('.play-icon').getAttribute('data-song');
+            var songIndex = element.querySelector('.play-icon').getAttribute('data-index');
+            var visualizer = document.getElementById('visualizer-' + songIndex);
+            var numberElement = element.querySelector('.number');
+            var playIconElement = element.querySelector('.play-icon');
+            var songTitleElement = element.querySelector('td:nth-child(2) div div:first-child');
+            var artistNamesElement = element.querySelector('.singer-name'); // Lấy phần tử cuối cùng (chỉ chứa tên ca sĩ)
+            var coverImage = element.querySelector('img').src; // Lấy hình ảnh album
+            var duration = element.querySelector('td:nth-child(5)').innerText.trim(); // Lấy thời gian bài hát
+
+            console.log("Video source:", element.querySelector('.source-video'));
+
+            var videoSrcElement = element.querySelector('.source-video');
+            var videoSrc = videoSrcElement ? videoSrcElement.innerHTML.trim() : null;
+
+            var artistImageElement = element.querySelector('.source-artist-image');
+            var artistImageSrc = artistImageElement ? artistImageElement.innerHTML.trim() : null; 
+
+            var artistDescription = element.querySelector('.source-artist-description');
+
+            if (artistDescription) {
+                console.log("Mô tả nghệ sĩ: " + artistDescription);
+                // Bạn có thể xử lý artistDescription ở đây
+            }
+
+            if (artistImageSrc) {
+                console.log("Đường dẫn hình ảnh ca sĩ: " + artistImageSrc);
+                // Bạn có thể làm gì đó với artistImageSrc ở đây
+            }
+            // Kiểm tra giá trị videoSrc
+            console.log("Video source:", videoSrc);
+
+
+            // Nếu có bài hát khác đang phát, dừng nó và reset trạng thái của nó
+            if (currentPlaying && currentPlaying !== element) {
+                console.log('Dừng bài hát cũ');
+                currentPlaying.querySelector('.play-icon').innerHTML = '&#9654;'; // Hiển thị biểu tượng phát
+                currentPlaying.querySelector('.number').style.display = 'inline'; // Hiện số thứ tự
+                currentPlaying.querySelector('.number').style.color = ''; // Trả lại màu mặc định cho số thứ tự
+                currentPlaying.querySelector('.play-icon').style.display = 'none'; // Ẩn biểu tượng phát
+                currentPlaying.querySelector('td:nth-child(2) div div:first-child').style.color = ''; // Trả lại màu ban đầu cho tên bài hát
+
+                var oldVisualizer = document.getElementById('visualizer-' + currentPlaying.querySelector('.play-icon').getAttribute('data-index'));
+                oldVisualizer.style.display = 'none'; // Ẩn visualizer của bài hát cũ
+            }
+
+            // Kiểm tra nếu bài hát hiện tại đang phát (không phải bài mới)
+            if (currentPlaying === element) {
+                if (!audioPlayer.paused) {
+                    // Nếu bài hát đang phát thì dừng nó
+                    console.log('Dừng phát bài hát');
+                    audioPlayer.pause(); // Dừng bài hát
+                    playIconElement.innerHTML = '&#9654;'; // Hiển thị biểu tượng phát
+                    visualizer.style.display = 'none'; // Ẩn visualizer
+                    numberElement.style.display = 'inline'; // Hiện số thứ tự
+                    numberElement.style.color = '#ff99ff'; // Trả lại màu mặc định
+                    songTitleElement.style.color = '#ff99ff'; // Trả lại màu mặc định cho tên bài hát
+                    playButton.src = '/Images/icons/play-button.png'; // Cập nhật biểu tượng nút thành phát
+
+                    isPlaying = false; // Đánh dấu là không phát
+                } else {
+                    // Nếu bài hát đang tạm dừng, phát lại nó
+                    console.log('Tiếp tục phát bài hát');
+                    audioPlayer.play(); // Phát lại bài hát
+                    playIconElement.innerHTML = '&#10074;&#10074;'; // Hiển thị biểu tượng dừng
+                    visualizer.style.display = 'flex'; // Hiển thị visualizer
+                    numberElement.style.display = 'none'; // Ẩn số thứ tự
+                    numberElement.style.color = '#ff99ff'; // Đổi màu số thứ tự khi đang phát
+                    songTitleElement.style.color = '#ff99ff'; // Đổi màu tên bài hát khi đang phát
+                    playButton.src = '/Images/icons/pause.png'; // Cập nhật biểu tượng nút thành tạm dừng
+                    isPlaying = true; // Đánh dấu là đang phát
+                }
+            } else {
+                // Kiểm tra xem đường dẫn của bài hát hiện tại có giống với bài hát mới không
+                var currentUrl = audioPlayer.src.substring(audioPlayer.src.indexOf('/MP3'));
+                if (currentUrl != songUrl) {
+                    audioPlayer.src = songUrl; // Đường dẫn MP3
+                    audioPlayer.onloadedmetadata = function () {
+                        updateDuration(); // Cập nhật thời gian khi metadata đã tải xong
+                    };
+                }
+
+                // Nếu đây là bài hát mới, phát nó
+                console.log('Phát bài hát mới');
+                audioPlayer.play(); // Phát bài hát
+                playIconElement.innerHTML = '&#10074;&#10074;'; // Hiển thị biểu tượng dừng
+                visualizer.style.display = 'flex'; // Hiển thị visualizer
+                numberElement.style.display = 'none'; // Ẩn số thứ tự
+                numberElement.style.color = '#ff99ff'; // Đổi màu số thứ tự khi đang phát
+                songTitleElement.style.color = '#ff99ff'; // Đổi màu tên bài hát khi đang phát
+                playButton.src = '/Images/icons/pause.png'; // Cập nhật biểu tượng nút thành tạm dừng
+                currentPlaying = element; // Cập nhật bài hát đang phát
+
+                // Cập nhật footer
+                updateFooter(songTitleElement.innerText.trim(), artistNamesElement.innerText.trim(), coverImage, duration);
+                updateOffcanvas(
+                    songTitleElement.innerText.trim(),  // Tên bài hát
+                    artistNamesElement.innerText.trim(), // Tên nghệ sĩ
+                    videoSrc,                            // Nguồn video
+                    artistImageSrc,
+                    artistDescription.innerText.trim(),
+                );
+            }
+
+            // Khi bài hát kết thúc, quay lại trạng thái ban đầu
+            audioPlayer.onended = function () {
+                console.log('Bài hát kết thúc');
+                if (isLooping) {
+                    // Nếu đang lặp lại, phát lại bài hát
+                    audioPlayer.currentTime = 0; // Quay lại đầu bài hát
+                    audioPlayer.play(); // Phát lại bài hát
+                } else if (isShuffling) {
+                    // Nếu đang shuffle, phát bài hát ngẫu nhiên
+                    playRandomSong(); // Hàm này cần được định nghĩa
+                } else {
+                    playIconElement.innerHTML = '&#9654;'; // Hiển thị biểu tượng phát
+                    visualizer.style.display = 'none'; // Ẩn visualizer
+                    numberElement.style.display = 'inline'; // Hiện số thứ tự
+                    numberElement.style.color = ''; // Trả lại màu mặc định
+                    songTitleElement.style.color = ''; // Trả lại màu ban đầu
+                    currentPlaying = null; // Reset bài hát đang phát
+                    isPlaying = false; // Đánh dấu là không phát
+                    playButton.src = '/Images/icons/pause.png'; // Cập nhật biểu tượng nút thành tạm dừng
+                }
+            };
+
+
+            // Cập nhật biểu tượng chính
+            updateMainPlayIcon();
+
+            // Cập nhật thời gian bài hát trong footer
+            audioPlayer.ontimeupdate = function () {
+                updateCurrentTime(audioPlayer.currentTime, audioPlayer.duration);
+
+                var progressPercentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.style.background = `linear-gradient(to right, #db8ef1 ${progressPercentage}%, #808080 ${progressPercentage}%)`;
+                progressBar.value = audioPlayer.currentTime; // Cập nhật giá trị thanh kéo
+                progressBar.max = audioPlayer.duration;
+                progressBar.addEventListener('input', function () {
+                    var newTime = (progressBar.value / progressBar.max) * audioPlayer.duration;
+                    audioPlayer.currentTime = newTime; // Thay đổi thời gian phát bài hát
+                });
+
+            };
+
+            audioPlayer.onpause = function () {
+                // Khi tạm dừng, đảm bảo cập nhật lại giá trị của thanh tiến trình
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.value = audioPlayer.currentTime;
+            };
+
+            audioPlayer.onplay = function () {
+                // Khi phát tiếp, đảm bảo giá trị của thanh tiến trình được khởi tạo lại
+                var progressBar = document.getElementById('progress-bar');
+                progressBar.value = audioPlayer.currentTime;
+            };
+        }
+
+        // Hàm cập nhật footer
+        function updateFooter(songTitle, artistNames, coverImage, duration) {
+            document.getElementById('current-song-title').innerText = songTitle;
+            document.getElementById('current-artist-names').innerText = artistNames;
+            document.getElementById('current-time').innerText = '0:00'; // Reset thời gian hiện tại
+            document.getElementById('duration').innerText = duration; // Cập nhật thời gian tổng
+            document.getElementById('current-song-cover').src = coverImage;
+        }
+
+        function updateOffcanvas(songTitle, artistNames, videoSrc, artistImageSrc, artistDescription) {
+
+            // Cập nhật tiêu đề bài hát và tên nghệ sĩ trong offcanvas
+            document.querySelector('.offcanvas-songTitle').innerText = songTitle;
+            document.querySelector('.offcanvas-artistName').innerText = artistNames;
+
+            // Cập nhật video trong offcanvas
+            const videoElement = document.querySelector('.song-video');
+            const sourceElement = videoElement.querySelector('source');
+
+            if (videoSrc) {
+                // Cập nhật nguồn video
+                sourceElement.src = videoSrc; // Cập nhật nguồn video
+                videoElement.load(); // Tải video mới
+                console.log("Updated video source:", videoSrc); // Kiểm tra giá trị videoSrc
+            } else {
+                console.error("Video source is null or undefined");
+            }
+
+            // Cập nhật thông tin về nghệ sĩ
+            document.querySelector('.artist-image').src = artistImageSrc; // Cập nhật hình ảnh nghệ sĩ
+            document.querySelector('.offcanvas-aboutTheArtist').innerText = artistNames;
+            document.querySelector('.offcanvas-description').innerText = artistDescription;
+
+        }
+
+
+
+        function updateCurrentTime(currentTime, duration) {
+            // Chuyển đổi giây thành định dạng phút:giây
+            var currentMinutes = Math.floor(currentTime / 60);
+            var currentSeconds = Math.floor(currentTime % 60);
+            var formattedCurrentTime = (currentMinutes < 10 ? '0' : '') + currentMinutes + ':' + (currentSeconds < 10 ? '0' : '') + currentSeconds;
+            document.getElementById('current-time').innerText = formattedCurrentTime;
+        }
+
+        function updateDuration() {
+            const durationElement = document.querySelector('.duration');
+            const totalSeconds = Math.floor(audioPlayer.duration); // Lấy tổng thời gian bài hát
+            const minutes = Math.floor(totalSeconds / 60); // Chuyển đổi thành phút
+            const seconds = totalSeconds % 60; // Lấy số giây còn lại
+
+            // Cập nhật giá trị cho phần tử .duration
+            durationElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`; // Nếu giây < 10 thì thêm số 0 trước
+        }
+
+
+        // Cập nhật biểu tượng play/pause chính
+        function updateMainPlayIcon() {
+            if (isPlaying) {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause'); // Thay đổi biểu tượng thành pause
+
+            } else {
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play'); // Thay đổi biểu tượng thành play
+            }
+        }
+
+        // Thêm sự kiện hover cho các hàng bài hát
+        document.querySelectorAll('.song-list tbody tr').forEach(function (row) {
+            row.addEventListener('mouseenter', function () {
+                var playIcon = row.querySelector('.play-icon');
+                var number = row.querySelector('.number');
+                var visualizer = row.querySelector('.audio-visualizer');
+
+                //console.log('Hover vào hàng:', row);
+
+                // Kiểm tra nếu bài hát này đang phát
+                if (currentPlaying === row) {
+
+                    // console.log('Bài hát đang phát, hiện biểu tượng dừng');
+
+                    playIcon.style.display = 'inline'; // Hiện biểu tượng dừng khi đang phát
+                    number.style.display = 'none'; // Ẩn số thứ tự khi hover
+                    visualizer.style.display = 'none'; // Ẩn visualizer khi hover
+
+                } else {
+
+                    // console.log('Bài hát không phát, hiện biểu tượng phát');
+
+                    playIcon.style.display = 'inline'; // Hiện biểu tượng phát khi hover
+                    number.style.display = 'none'; // Ẩn số thứ tự khi hover
+                    visualizer.style.display = 'none'; // Ẩn visualizer khi hover
+                }
+            });
+
+            row.addEventListener('mouseleave', function () {
+                var playIcon = row.querySelector('.play-icon');
+                var number = row.querySelector('.number');
+                var visualizer = row.querySelector('.audio-visualizer');
+
+                //console.log('Rời khỏi hàng:', row);
+
+                if (currentPlaying === row) {
+                    if (audioPlayer.paused) {
+
+                        console.log('Nhạc đã dừng, hiện số thứ tự');
+
+                        playIcon.style.display = 'none'; // Ẩn biểu tượng phát khi nhạc dừng
+                        visualizer.style.display = 'none'; // Ẩn visualizer khi dừng
+                        number.style.display = 'inline'; // Hiện số thứ tự khi nhạc dừng và không hover
+                    } else {
+
+                        console.log('Nhạc đang phát, ẩn tất cả');
+
+                        playIcon.style.display = 'none'; // Ẩn biểu tượng dừng khi không hover mà đang phát nhạc
+                        number.style.display = 'none'; // Ẩn số khi đang phát và không hover
+                        visualizer.style.display = 'flex'; // Hiện visualizer khi đang phát
+
+                    }
+                } else {
+
+                    console.log('Bài hát không phát, hiện số thứ tự');
+
+                    playIcon.style.display = 'none'; // Ẩn biểu tượng phát khi không hover và không phát nhạc
+                    number.style.display = 'inline'; // Hiện số khi nhạc dừng và không hover
+                }
+            });
+
+
+        });
+        /*-------------------Play Button --------------------*/
+        //const playButton = document.getElementById('playButton'); // Lấy nút play từ DOM
+        const baseUrl = window.location.origin; // Lấy địa chỉ gốc của ứng dụng
+        let lastPlayedSong = null; // Biến để lưu bài hát cuối cùng đã phát
+
+        //function updatePlayButton(isPlaying) {
+        //    if (isPlaying) {
+        //        playButton.src = `${baseUrl}/Images/icons/pause.png`;
+        //        console.log('PlayButton is Pause'); // Log trạng thái shuffle
+        //    } else {
+        //        playButton.src = `${baseUrl}/Images/icons/play-button.png`;
+        //        console.log('PlayButton is Play'); // Log trạng thái shuffle
+        //    }
+        //}
+
+        function playNext() {
+            // Tìm bài hát tiếp theo và phát
+            if (currentPlaying) {
+                var nextElement = currentPlaying.nextElementSibling; // Lấy bài hát tiếp theo
+                if (nextElement) {
+                    playSong(nextElement);
+                }
+            }
+        }
+
+        // Hàm phát bài hát trước đó
+        function playPrevious() {
+            // Tìm bài hát trước đó và phát
+            if (currentPlaying) {
+                var prevElement = currentPlaying.previousElementSibling; // Lấy bài hát trước đó
+                if (prevElement) {
+                    playSong(prevElement);
+                }
+            }
+        }
+
+
+        function toggleShuffle() {
+            isShuffling = !isShuffling; // Đổi trạng thái shuffle
+            const shuffleButton = document.getElementById('shuffleButton');
+            if (isShuffling) {
+                shuffleButton.classList.add('active'); // Thêm class active nếu shuffle đang bật
+                shuffleButton.src = `${baseUrl}/Images/icons/shuffle-active.png`;
+                console.log('Shuffle is ON'); // Log trạng thái shuffle
+            } else {
+                shuffleButton.classList.remove('active'); // Xóa class active nếu shuffle đang tắt
+                shuffleButton.src = `${baseUrl}/Images/icons/shuffle.png`;
+                console.log('Shuffle is OFF'); // Log trạng thái shuffle
+            }
+        }
+
+
+        function toggleLoop() {
+            isLooping = !isLooping; // Đổi trạng thái loop
+            const loopButton = document.getElementById('loopButton');
+            if (isLooping) {
+                loopButton.classList.add('active'); // Thêm class active nếu loop đang bật
+                loopButton.src = `${baseUrl}/Images/icons/loop-active.png`;
+                console.log('Loop is ON'); // Log trạng thái loop
+            } else {
+                loopButton.classList.remove('active'); // Xóa class active nếu loop đang tắt
+                loopButton.src = `${baseUrl}/Images/icons/loop.png`;
+                console.log('Loop is OFF'); // Log trạng thái loop
+            }
+        }
+
+        function playRandomSong() {
+            const allSongs = document.querySelectorAll('.song-list tbody tr'); // Lấy tất cả bài hát
+            const songsToPlay = Array.from(allSongs).filter(song => song !== lastPlayedSong); // Lọc bỏ bài hát đã phát
+
+            if (songsToPlay.length > 0) {
+                const randomIndex = Math.floor(Math.random() * songsToPlay.length); // Lấy một chỉ số ngẫu nhiên
+                lastPlayedSong = songsToPlay[randomIndex]; // Cập nhật bài hát cuối cùng đã phát
+                playSong(lastPlayedSong); // Phát bài hát ngẫu nhiên
+            } else {
+                console.log('Không còn bài hát nào để phát');
+            }
+        }
+        /*------------------- Toggle Play --------------------*/
+        function togglePlay() {
+            var playButton = document.getElementById('playButton'); // Lấy phần tử nút play
+
+            if (currentPlaying) {
+                console.log('Toggle phát/dừng bài hát hiện tại');
+                var currentVisualizer = document.getElementById('visualizer-' + currentPlaying.querySelector('.play-icon').getAttribute('data-index'));
+                var numberElement = currentPlaying.querySelector('.number');
+                var playIconElement = currentPlaying.querySelector('.play-icon');
+                var songTitleElement = currentPlaying.querySelector('td:nth-child(2) div div:first-child');
+
+                if (audioPlayer.paused) {
+                    console.log('Tiếp tục phát bài hát');
+                    audioPlayer.play(); // Phát lại bài hát hiện tại
+                    isPlaying = true; // Đặt trạng thái là đang phát
+                    playIconElement.innerHTML = '&#10074;&#10074;'; // Cập nhật biểu tượng pause
+                    currentVisualizer.style.display = 'flex'; // Hiển thị visualizer
+                    numberElement.style.display = 'none'; // Ẩn số thứ tự
+                    songTitleElement.style.color = '#ff99ff'; // Đổi màu tên bài hát khi đang phát
+                    playButton.src = '/Images/icons/pause.png'; // Cập nhật biểu tượng nút thành tạm dừng
+                } else {
+                    console.log('Dừng phát bài hát');
+                    audioPlayer.pause(); // Dừng bài hát hiện tại
+                    isPlaying = false; // Đặt trạng thái là không phát
+                    playIconElement.innerHTML = '&#9654;'; // Cập nhật biểu tượng play
+                    currentVisualizer.style.display = 'none'; // Ẩn visualizer
+                    numberElement.style.display = 'inline'; // Hiện lại số thứ tự
+                    songTitleElement.style.color = '#ff99ff'; // Trả lại màu tên bài hát
+                    playButton.src = '/Images/icons/play-button.png'; // Cập nhật biểu tượng nút thành phát
+                }
+
+                // Cập nhật biểu tượng chính
+                updateMainPlayIcon();
+            } else {
+                console.log('Phát bài hát đầu tiên');
+                // Nếu không có bài hát nào đang phát, phát bài đầu tiên
+                var firstSongElement = document.querySelector('.song-list tbody tr');
+                if (firstSongElement) {
+                    playSong(firstSongElement); // Phát bài hát đầu tiên
+                }
+            }
+        }
+
+
+        //------------------- Script lấy màu pixel ------------------
+        // Hàm để lấy màu sắc từ hình ảnh
+        function getAverageColor(imageUrl) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = imageUrl;
+
+                img.onload = () => {
+                    // Tạo canvas để lấy pixel
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    // Lấy pixel dữ liệu từ canvas
+                    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = data.data;
+
+                    // Tính trung bình màu
+                    let r = 0, g = 0, b = 0;
+                    const pixelCount = pixels.length / 4; // Mỗi pixel có 4 giá trị (RGBA)
+                    for (let i = 0; i < pixels.length; i += 4) {
+                        r += pixels[i];     // R
+                        g += pixels[i + 1]; // G
+                        b += pixels[i + 2]; // B
+                    }
+                    r = Math.floor(r / pixelCount);
+                    g = Math.floor(g / pixelCount);
+                    b = Math.floor(b / pixelCount);
+
+                    // Trả về màu trung bình
+                    resolve({ r, g, b });
+                };
+
+                img.onerror = (error) => {
+                    reject(error);
+                };
+            });
+        }
+
+        // Lấy hình ảnh từ DOM
+        const imageUrl = document.querySelector('.playlistAvatar-image').src;
+
+        // Gọi hàm để lấy màu sắc và cập nhật header
+        getAverageColor(imageUrl).then(color => {
+            const header = document.querySelector('.header');
+            const rgbaColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`; // Đặt alpha cho màu
+
+            // Cập nhật màu nền của header
+            header.style.backgroundColor = rgbaColor;
+
+            // Cập nhật màu bóng đổ (nếu sử dụng biến CSS)
+            header.style.setProperty('--after-bg', rgbaColor);
+        }).catch(error => {
+            console.error("Không thể lấy màu sắc từ hình ảnh:", error);
+        });
+
+
+    </script>
+
+
+</body>

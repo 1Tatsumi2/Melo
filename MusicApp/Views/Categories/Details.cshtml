@@ -1,0 +1,27 @@
+﻿@model MusicApp.Models.Category
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Category</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ten_The_Loai)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ten_The_Loai)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Ma_The_Loai }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

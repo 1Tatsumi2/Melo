@@ -1,0 +1,158 @@
+﻿@model MusicApp.Models.Song
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .img-square {
+        width: 150px;
+        height: 150px;
+        object-fit: cover; /* Đảm bảo ảnh được cắt phù hợp */
+        border: 2px solid #fff; /* Thêm viền trắng */
+        margin-top: 10px; /* Khoảng cách phía trên */
+    }
+
+    .submit-container {
+        border: 2px solid #ccc; /* Màu viền của khung */
+        padding: 10px; /* Khoảng cách bên trong khung */
+        border-radius: 8px; /* Bo góc khung */
+        display: inline-block; /* Giúp khung không chiếm toàn bộ chiều rộng */
+    }
+
+    .text-center {
+        text-align: center; /* Căn giữa nội dung trong khung */
+    }
+</style>
+
+<h2>Create</h2>
+<body>
+    @using (Html.BeginForm("Create", "Songs", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Song</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ten_Bai_Hat, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ten_Bai_Hat, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Ten_Bai_Hat, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Thoi_Luong, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!-- Thời lượng sẽ được tự động tính toán và hiển thị ở đây -->
+                @Html.EditorFor(model => model.Thoi_Luong, new { htmlAttributes = new { @class = "form-control", @id = "ThoiLuong", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.Thoi_Luong, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!-- Thêm input để chọn tệp hình ảnh -->
+                <input type="file" name="HinhAnh" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+
+                <!-- Khu vực để hiển thị ảnh đã chọn -->
+                <div>
+                    <img id="preview" src="~/Images/default-avatar.jpg" alt="Image Preview" class="img-square" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MP3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <!-- Input để chọn tệp MP3 -->
+                <input type="file" id="mp3File" name="MP3" class="form-control" accept=".mp3" onchange="calculateDuration(event)" />
+                @Html.ValidationMessageFor(model => model.MP3, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Video, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="Video" class="form-control" accept=".mp4" />
+                @Html.ValidationMessageFor(model => model.Video, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ma_Album, "Ma_Album", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Ma_Album", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Ma_Album, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("Singer", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Ma_Ca_Si", (SelectList)ViewBag.Ma_Ca_Si, "Chọn Ca Sĩ", new { @class = "form-control" })
+                @Html.ValidationMessage("Ma_Ca_Si", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("PlayList", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Ma_PlayList", (SelectList)ViewBag.Ma_PlayList, "Chọn Playlist", new { @class = "form-control" })
+                @Html.ValidationMessage("Ma_PlayList", "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div style="margin-top:50px" class="form-group text-center">
+            <div class="submit-container">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    }
+
+<div style="margin-top:50px" class="form-group text-center">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result; // Hiển thị ảnh đã chọn
+            };
+            reader.readAsDataURL(event.target.files[0]); // Đọc file ảnh
+        }
+
+
+        function calculateDuration(event) {
+            var file = event.target.files[0]; // Lấy tệp MP3 từ input
+            var audio = new Audio(URL.createObjectURL(file)); // Tạo đối tượng audio từ tệp
+
+            audio.addEventListener('loadedmetadata', function () {
+                // Khi đã tải xong metadata (bao gồm cả thời lượng)
+                var duration = audio.duration; // Thời lượng tính bằng giây
+
+                // Chuyển đổi thời gian sang phút và giây
+                var minutes = Math.floor(duration / 60);
+                var seconds = Math.floor(duration % 60);
+
+                // Định dạng lại giây nếu nhỏ hơn 10
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                // Cập nhật giá trị thời lượng trong input (ví dụ: 3:45)
+                document.getElementById('ThoiLuong').value = minutes + ":" + seconds;
+            });
+        }
+    </script>
+</body>

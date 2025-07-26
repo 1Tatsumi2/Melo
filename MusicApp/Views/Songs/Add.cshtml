@@ -1,0 +1,38 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thêm bài hát vào Playlist</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Thêm bài hát vào Playlist</h4>
+        <hr />
+
+        <div class="form-group">
+            @Html.Label("Chọn Bài Hát", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Ma_Bai_Hat", ViewBag.Songs as SelectList, "-- Chọn Bài Hát --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Chọn Playlist", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Ma_PlayList", ViewBag.PlayLists as SelectList, "-- Chọn Playlist --", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Thêm" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+

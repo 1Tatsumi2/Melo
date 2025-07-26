@@ -1,0 +1,82 @@
+﻿@model MusicApp.Models.Song
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Song</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ten_Bai_Hat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ten_Bai_Hat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Thoi_Luong)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Thoi_Luong)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HinhAnh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MP3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MP3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MP3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MP3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Video)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Video)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Album.Ten_Album)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Album.Ten_Album)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Singer.Ten_Ca_Si)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Singer.Ten_Ca_Si)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Ma_Bai_Hat }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

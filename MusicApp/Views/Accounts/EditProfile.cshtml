@@ -1,0 +1,114 @@
+﻿@model MusicApp.Models.Account
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<head>
+<style>
+    .img-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* Tạo hình tròn */
+        object-fit: cover; /* Đảm bảo ảnh được cắt phù hợp */
+        border: 2px solid #fff; /* Thêm viền trắng */
+        margin-top: 10px; /* Khoảng cách phía trên */
+    }
+
+    .submit-container {
+        border: 2px solid #ccc; /* Màu viền của khung */
+        padding: 10px; /* Khoảng cách bên trong khung */
+        border-radius: 8px; /* Bo góc khung */
+        display: inline-block; /* Giúp khung không chiếm toàn bộ chiều rộng */
+    }
+
+    .text-center {
+        text-align: center; /* Căn giữa nội dung trong khung */
+    }
+</style>
+</head>
+<h2>Edit Profile</h2>
+<body>
+    @using (Html.BeginForm("EditProfile", "Accounts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4 style="margin-top:-20px" >Account Information</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TaiKhoan, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TaiKhoan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.PasswordFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HinhAnh, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="file" name="HinhAnh" class="form-control" accept="image/*" onchange="previewImage(event)" />
+                    @Html.ValidationMessageFor(model => model.HinhAnh, "", new { @class = "text-danger" })
+
+                    <!-- Hiển thị ảnh hiện tại hoặc ảnh mới -->
+                    <div style="margin-top: 10px;">
+                        <img id="preview" src="~/Images/@Model.HinhAnh" alt="Profile Picture" class="img-circle" style="max-width: 200px; max-height: 200px;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Role, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @Html.HiddenFor(model => model.Ma_User)
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    <a href="@Url.Action("Profile", "Accounts")" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <script>function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }</script>
+</body>

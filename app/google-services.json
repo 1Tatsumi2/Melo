@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "29461595313",
+    "project_id": "melodify-f7c0f",
+    "storage_bucket": "melodify-f7c0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29461595313:android:4bec641e12a792005a0e90",
+        "android_client_info": {
+          "package_name": "com.example.musicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDnd4CXFJ8MFf0aBjJO7xDmxZRjhY8FVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

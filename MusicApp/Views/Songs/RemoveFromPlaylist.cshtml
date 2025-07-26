@@ -1,0 +1,54 @@
+﻿@model IEnumerable<MusicApp.Models.Song>
+@{
+    ViewBag.Title = "RemoveFromPlaylist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RemoveFromPlaylist</h2>
+<h2>Danh sách bài hát</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten_Bai_Hat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ma_Album)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ma_Ca_Si)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Thoi_Luong)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten_Bai_Hat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Album.Ten_Album)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Singer.Ten_Ca_Si)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Thoi_Luong)
+                </td>
+                <td>
+                    @foreach (var playlist in item.Song_Play)
+                    {
+                        <span>@playlist.PlayList.Ten_PlayList</span>
+                        @Html.ActionLink("Remove", "RemoveFromPlaylist", new { songId = item.Ma_Bai_Hat, playlistId = playlist.Ma_PlayList }, new { @class = "btn btn-danger btn-sm" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

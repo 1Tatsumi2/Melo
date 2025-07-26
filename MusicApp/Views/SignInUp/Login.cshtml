@@ -1,0 +1,130 @@
+﻿@model MusicApp.Models.Account
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null; // Không sử dụng layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Melodify</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-image: url('/Images/background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Đảm bảo hình nền cố định khi cuộn */
+            background-position: center; /* Canh giữa hình nền */
+            height: 100vh; /* Chiều cao bằng viewport để phủ đầy màn hình */
+            margin: 0;
+        }
+
+        form {
+            height: 520px;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.13);
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
+            border-radius: 10px;
+            backdrop-filter: blur(10px); /* Hiệu ứng làm mờ */
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Viền mờ */
+            box-shadow: 0 0 40px rgba(8, 7, 16, 0.6); /* Đổ bóng */
+            padding: 50px 35px;
+        }
+
+        input {
+            display: block;
+            height: 50px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.07); /* Màu nền cho input */
+            border-radius: 3px;
+            padding: 0 10px;
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        button {
+            margin-top: 50px;
+            width: 100%;
+            background-color: #ffffff; /* Màu nền cho nút */
+            color: #080710; /* Màu chữ cho nút */
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background-color: white;
+        }
+
+
+        
+    </style>
+</head>
+
+    <body>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h2 style="text-align:center">Login to Melodify</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group" style="margin-top:20px">
+            @Html.LabelFor(model => model.TaiKhoan, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TaiKhoan, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TaiKhoan, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top:5px">
+            @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <div class="col-md-offset-2 col-md-10">
+                <label style="margin-top:30px;margin-left:200px" class="text-danger">@ViewBag.Notification</label>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <div class="col-md-12" style="margin-top:-10px">
+                <a href="@Url.Action("ResetPassword", "SignInUp")" class="reset-password">Forgot your password?</a>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <div class="col-md-12" style="margin-top:30px; margin-left:10px">
+                <input type="submit" value="Log In" class="btn btn-primary" />
+            </div>
+        </div>
+
+
+        <div class="form-group text-center">
+            <div class="col-md-12" style="text-align:center;margin-top:70px">
+                <p>
+                    Don't have an account?
+                    <a href="@Url.Action("SignUp", "SignInUp")" class="sign-up-link">Sign up for Melodify!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+        }
+</body>
+
+</html>

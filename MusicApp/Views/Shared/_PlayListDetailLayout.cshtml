@@ -1,0 +1,931 @@
+﻿@model MusicApp.Models.PlayListDetailViewModel
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+
+        /*        --------------------------Body-------------------------------------------------------------*/
+
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Đặt chiều cao của body */
+            background-color: #f0f0f0; /* Màu nền cho toàn bộ trang */
+        }
+
+
+        /*        --------------------------Menu Main-------------------------------------------------------------*/
+
+        .menu {
+            background-color: #000000;
+            height: 63px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+        }
+
+
+        /*        --------------------------Menu Left-------------------------------------------------------------*/
+
+        .menu-left, .menu-center, .menu-right {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+            .menu-left .logo {
+                width: 60px;
+                height: 50px;
+                margin-right: 15px;
+            }
+
+            .menu-left .home {
+                font-size: 20px;
+                margin-right: 15px;
+            }
+
+        .menu-center {
+            display: flex;
+            align-items: center;
+            margin-left: 180px;
+        }
+
+        .home-icon {
+            width: 50px; /* Đặt chiều rộng cho vòng tròn */
+            height: 50px; /* Đặt chiều cao để tạo hình vuông */
+            background-color: #121212; /* Màu nền cho vòng tròn */
+            border-radius: 50%; /* Bo góc để tạo hình tròn */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px; /* Khoảng cách giữa icon ngôi nhà và thanh tìm kiếm */
+            font-size: 20px; /* Kích thước của icon ngôi nhà */
+            color: white;
+        }
+
+
+        .search-bar {
+            background-color: #121212;
+            border-radius: 20px;
+            padding: 10px 20px; /* Tăng padding để thanh tìm kiếm cao hơn */
+            display: flex;
+            align-items: center;
+            width: 450px; /* Tăng chiều rộng của thanh tìm kiếm */
+        }
+
+            .search-bar i {
+                color: #b3b3b3;
+                font-size: 20px; /* Kích thước của icon tìm kiếm và thùng rác */
+                margin-right: 15px;
+            }
+
+            .search-bar input {
+                background-color: transparent;
+                border: none;
+                color: white;
+                outline: none;
+                width: 100%;
+                margin-left: 10px;
+                font-size: 16px; /* Tăng kích thước font chữ */
+            }
+
+
+
+
+
+        /*        --------------------------Menu Right-------------------------------------------------------------*/
+
+
+        .menu-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Đẩy các nút về bên trái */
+            gap: 30px; /* Tạo khoảng cách giữa các nút */
+        }
+
+        .explore-btn {
+            text-decoration: none;
+            background-color: white; /* Màu nền cho nút Explore Premium */
+            color: black; /* Màu chữ */
+            border: none;
+            border-radius: 20px; /* Bo góc */
+            padding: 12px 25px; /* Tăng padding cho nút */
+            margin-right: 0; /* Xóa khoảng cách bên phải để khoảng cách được tạo bởi gap */
+            cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+            font-size: 13px; /* Kích thước font chữ */
+            font-weight: bold;
+        }
+
+        .install-btn {
+            text-decoration: none;
+            background-color: #121212; /* Màu nền cho nút Install App */
+            color: white; /* Màu chữ */
+            border: none;
+            border-radius: 50%; /* Bo góc thành hình tròn */
+            padding: 10px; /* Padding cho nút */
+            display: flex; /* Sử dụng flexbox cho icon và chữ */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            justify-content: center; /* Căn giữa theo chiều ngang */
+            cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+            font-size: 14px; /* Kích thước font chữ */
+        }
+
+            .install-btn i {
+                margin-right: 5px; /* Khoảng cách giữa icon và chữ */
+                color: white; /* Màu cho icon */
+            }
+
+        .notification-bell {
+            margin-left: 0; /* Xóa khoảng cách bên trái để khoảng cách được tạo bởi gap */
+            font-size: 20px; /* Kích thước của icon chuông thông báo */
+            color: white; /* Màu cho chuông thông báo */
+        }
+
+        .profile-pic {
+            width: 45px; /* Chiều rộng của avatar */
+            height: 45px; /* Chiều cao của avatar */
+            border-radius: 50%; /* Bo góc thành hình tròn */
+            background-color: white; /* Màu nền của avatar */
+            display: flex;
+            border: 3px solid #d3d3d3; /* Vòng tròn màu xám nhạt */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
+            object-fit: cover;
+            font-size: 14px; /* Kích thước chữ trong avatar */
+            color: black; /* Màu chữ trong avatar */
+            margin-left: 10px; /* Khoảng cách với nút bên trái */
+            position: relative; /* Để dễ dàng căn chỉnh vị trí */
+            animation: pulse 2s infinite; /* Thêm hiệu ứng hoạt ảnh */
+            cursor: pointer;
+        }
+
+        .profile-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown menu */
+        .dropdown-menu {
+            display: none; /* Ẩn menu đổ xuống ban đầu */
+            position: absolute;
+            background-color: #333; /* Màu nền đen */
+            color: white; /* Màu chữ trắng */
+            min-width: 150px; /* Chiều rộng tối thiểu của menu */
+            top: 60px; /* Khoảng cách giữa ảnh và menu */
+            right: 0;
+            z-index: 1; /* Hiển thị trên các phần tử khác */
+            border-radius: 8px; /* Bo tròn góc menu */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+        }
+
+            /* Định dạng cho các mục trong dropdown */
+            .dropdown-menu a {
+                color: white;
+                padding: 8px 10px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+            }
+
+                /* Hiệu ứng khi di chuột vào các mục */
+                .dropdown-menu a:hover {
+                    background-color: #575757;
+                }
+
+        /* Hiển thị dropdown khi di chuột vào ảnh */
+        /*.profile-container:hover .dropdown-menu {
+            display: none;
+        }*/
+
+        .divider {
+            border: none; /* Ẩn viền mặc định */
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* Tạo thanh mờ với màu trắng và độ mờ */
+            margin: 1px 0; /* Khoảng cách trên dưới của thanh */
+        }
+
+
+        /*        --------------------------Container-------------------------------------------------------------*/
+
+
+        .container {
+            flex: 1; /* Chiếm toàn bộ không gian còn lại */
+            display: flex; /* Sử dụng flexbox cho bố cục bên trái và bên phải */
+            gap: 7px; /* Khoảng cách giữa hai khung */
+            padding: 7px; /* Khoảng cách giữa khung và mép */
+            background-color: #000000;
+        }
+
+
+        /*        --------------------------Left Main-------------------------------------------------------------*/
+
+
+        .left {
+            width: 28%;
+            background-color: #121212; /* Màu nền cho khung trái */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex; /* Sử dụng flexbox */
+            flex-direction: column; /* Đặt chiều dọc cho các phần tử bên trong */
+            padding: 20px; /* Thêm khoảng cách bên trong khung */
+            box-sizing: border-box; /* Bao gồm padding trong kích thước */
+        }
+
+        .library-header {
+            display: flex; /* Sử dụng flexbox để căn giữa */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            margin-bottom: 20px; /* Khoảng cách dưới giữa header và nội dung */
+        }
+
+        .library-image {
+            width: 30px; /* Đặt kích thước cho hình ảnh thư viện */
+            height: 30px; /* Đặt kích thước cho hình ảnh thư viện */
+            margin-right: 8px; /* Khoảng cách giữa hình ảnh và tiêu đề */
+        }
+
+        .library-title {
+            font-size: 16px; /* Kích thước chữ cho tiêu đề */
+            font-weight: bold; /* Làm cho tiêu đề đậm */
+            margin-right: auto; /* Đẩy các icon sang bên phải */
+        }
+
+        .add-icon,
+        .arrow-right {
+            width: 20px; /* Kích thước cho biểu tượng dấu "+" và mũi tên */
+            height: 20px; /* Kích thước cho biểu tượng dấu "+" và mũi tên */
+            cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+            margin-left: 10px; /* Khoảng cách giữa các icon */
+        }
+
+        .playlist-container {
+            background-color: #282828;
+            display: flex;
+            align-items: center; /* Căn giữa theo chiều dọc */
+            margin-top: 5px; /* Khoảng cách trên giữa các phần */
+            cursor: pointer;
+            padding: 5px 20px 5px 20px; /* Tăng padding cho nút */
+            border-radius: 12px; /* Bo góc */
+            border: none;
+            width: 30px;
+        }
+
+
+        .playlist-text {
+            color: white; /* Màu chữ */
+            font-size: 14px; /* Kích thước chữ nhỏ hơn */
+            font-weight: bold; /* Chữ đậm */
+            margin-left: -9px;
+        }
+
+
+        .search-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0 20px -5px; /* Khoảng cách trên và dưới */
+        }
+
+        .search-box {
+            background-color: #282828;
+            border: none;
+            border-radius: 20px;
+            padding: 5px 10px;
+            color: white;
+            width: 70%; /* Chiều rộng hộp tìm kiếm */
+        }
+
+        .recents-text {
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .list-icon {
+            margin-left: 5px;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .playlist-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .playlist-info h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .playlist-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #b3b3b3;
+        }
+
+
+
+
+        /*        --------------------------Right Main-------------------------------------------------------------*/
+        .right {
+            width: 72%;
+            background-color: #121212; /* Màu nền cho khung phải */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex;
+            flex-direction: column; /* Bố cục theo cột */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+            overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+        }
+
+        /* Phần tiêu đề và các nút lọc */
+        .header {
+            padding: 15px 0px 0px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background-color: #333333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .filter-btn.active {
+                background-color: white;
+                color: black;
+            }
+
+            .filter-btn:hover {
+                background-color: #808080;
+            }
+
+        /* Danh sách các playlist dạng hàng */
+        .playlist-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Cố định 4 cột */
+            gap: 8px; /* Khoảng cách giữa các thẻ */
+            max-height: calc(2 * 150px + 15px); /* Chiều cao tối đa cho 2 dòng, mỗi thẻ cao 150px */
+            overflow: hidden; /* Ẩn nếu có nội dung vượt quá */
+            padding: 0px 15px 0px 15px;
+        }
+
+        /* Thẻ playlist nhỏ */
+        .playlist-card {
+            background-color: #333333;
+            border-radius: 8px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: start; /* Canh trái nội dung */
+            cursor: pointer;
+            transition: background-color 0.5s ease;
+            gap: 8px; /* Khoảng cách giữa hình ảnh và văn bản */
+            overflow: hidden; /* Đảm bảo không có tràn nội dung */
+        }
+
+            .playlist-card img {
+                width: 20%; /* Hình ảnh chiếm 20% chiều rộng */
+                height: 100%; /* Hình ảnh chiếm toàn bộ chiều cao của thẻ */
+                object-fit: cover; /* Giữ tỉ lệ ảnh hợp lý */
+                border-radius: 8px 0 0 8px; /* Bo góc chỉ bên trái */
+                margin-right: 0; /* Đảm bảo không có khoảng cách bên phải ảnh */
+            }
+
+            .playlist-card span {
+                flex: 1; /* Để văn bản chiếm không gian còn lại */
+                text-align: left; /* Canh trái văn bản */
+                white-space: nowrap; /* Tránh xuống dòng */
+                overflow: hidden; /* Ẩn nếu văn bản quá dài */
+                text-overflow: ellipsis; /* Thêm dấu "..." nếu văn bản quá dài */
+            }
+
+            .playlist-card:hover {
+                background-color: #808080;
+            }
+
+
+
+
+
+
+        /* Tiêu đề cho từng mục */
+        .section-title {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        /* Lưới playlist lớn */
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Linh hoạt theo chiều ngang */
+            gap: 20px;
+        }
+
+        /* Thẻ playlist lớn */
+        .playlist-card.large {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #2c2c2c;
+            padding: 10px;
+        }
+
+            .playlist-card.large img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+            }
+
+            .playlist-card.large p {
+                font-weight: bold;
+                margin: 10px 0 5px;
+            }
+
+            .playlist-card.large span {
+                font-size: 0.9em;
+                color: #b3b3b3;
+            }
+
+
+
+
+        /*        --------------------------Footer Main-------------------------------------------------------------*/
+
+
+        .footer {
+            background-color: #121212; /* Màu nền cho footer */
+            color: white; /* Màu chữ */
+            display: flex; /* Sử dụng flexbox cho bố cục */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            justify-content: space-between; /* Căn giữa các phần tử */
+            padding: 10px 20px; /* Padding cho footer */
+        }
+
+
+
+        /*        --------------------------Footer Left-------------------------------------------------------------*/
+
+
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            width: 28%;
+            overflow: hidden; /* Ẩn nội dung tràn */
+        }
+
+        .footer-song-info {
+            display: flex;
+            flex-direction: column;
+            white-space: nowrap;
+            overflow: hidden; /* Ẩn văn bản vượt quá */
+            width: 100%;
+        }
+
+        .scrolling-text {
+            display: inline-block;
+            white-space: nowrap; /* Ngăn văn bản xuống dòng */
+            animation: scroll 10s linear infinite; /* Chạy liên tục */
+            width: calc(200%); /* Đặt chiều rộng gấp đôi chiều rộng văn bản */
+        }
+
+        .space {
+            display: inline-block; /* Đảm bảo không xuống dòng */
+            width: 20px; /* Khoảng cách bạn muốn */
+        }
+
+        .song-title {
+            font-weight: bold; /* Làm cho tiêu đề bài hát đậm */
+            font-size: 14px; /* Thay đổi kích thước chữ của tiêu đề bài hát */
+        }
+
+        .artist-names {
+            font-size: 12px; /* Kích thước chữ của tên ca sĩ */
+            color: rgba(255, 255, 255, 0.7); /* Màu nhạt hơn */
+            margin-top: 10px;
+        }
+
+        .song-title, .artist-names {
+            display: inline-block; /* Hiển thị thành khối để có thể điều chỉnh */
+        }
+
+        .footer-left:hover .footer-song-info {
+            animation-play-state: running; /* Bắt đầu chạy khi hover */
+        }
+
+        .album-cover {
+            width: 60px; /* Kích thước ảnh bìa */
+            height: 60px; /* Kích thước ảnh bìa */
+            border-radius: 5px; /* Bo góc cho ảnh bìa */
+            margin-right: 10px; /* Khoảng cách giữa ảnh bìa và thông tin bài hát */
+        }
+
+
+        /*        --------------------------Footer Center-------------------------------------------------------------*/
+
+
+        .footer-center {
+            display: flex;
+            flex-direction: column; /* Sắp xếp theo cột */
+            align-items: center; /* Căn giữa các phần tử theo chiều ngang */
+            justify-content: center; /* Căn giữa các phần tử theo chiều dọc */
+            width: auto; /* Để phần footer-center chiếm toàn bộ chiều rộng */
+            max-width: 600px; /* Đặt giới hạn chiều rộng để không quá dài trên màn hình lớn */
+            margin-right: 30px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between; /* Tạo khoảng cách đều giữa các nút điều khiển */
+            gap: 20px; /* Khoảng cách giữa các nút điều khiển */
+            margin-bottom: 10px; /* Khoảng cách dưới các nút điều khiển để tách với thanh progress */
+        }
+
+        .control-btn, .footer-icon {
+            width: 25px; /* Kích thước ảnh */
+            height: 25px; /* Kích thước ảnh */
+            cursor: pointer; /* Đổi con trỏ thành bàn tay khi hover */
+        }
+
+            .control-btn:hover, .footer-icon:hover {
+                opacity: 0.8; /* Hiệu ứng hover khi di chuột */
+            }
+
+        .progress {
+            display: flex;
+            align-items: center;
+            width: 100%; /* Để thanh progress chiếm toàn bộ chiều rộng */
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 1000px; /* Độ rộng của thanh kéo, tăng để làm nó dài hơn */
+            margin: 0 10px; /* Khoảng cách giữa thời gian hiện tại và thời gian kết thúc */
+            background: linear-gradient(to right, #808080 0%, #808080 0%);
+            height: 5px; /* Chiều cao của thanh kéo */
+            border-radius: 5px; /* Bo tròn thanh kéo */
+            outline: none; /* Xóa viền */
+            appearance: none;
+        }
+
+            .progress-bar::-webkit-slider-thumb {
+                appearance: none;
+                width: 15px;
+                height: 15px;
+                background-color: #db8ef1; /* Màu nút kéo */
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+        .current-time, .duration {
+            font-size: 12px; /* Kích thước chữ cho thời gian */
+        }
+
+
+
+
+        /*        --------------------------Footer Right-------------------------------------------------------------*/
+
+
+
+        .footer-right {
+            display: flex; /* Sử dụng flexbox cho phần bên phải */
+            gap: 10px; /* Khoảng cách giữa các icon */
+        }
+
+        .footer-icon {
+            width: 20px; /* Giảm kích thước icon */
+            height: 20px; /* Giảm kích thước icon */
+            cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+            opacity: 0.7; /* Đặt độ mờ cho icon */
+            transition: opacity 0.3s;
+        }
+
+            .footer-icon:hover {
+                opacity: 1; /* Đặt độ mờ về 100% khi hover */
+            }
+
+
+        .volume-slider {
+            -webkit-appearance: none; /* Xóa kiểu mặc định của thanh trượt */
+            width: 100px; /* Đặt chiều rộng cho thanh trượt */
+            margin-top: 8px; /* Điều chỉnh giá trị này để hạ thanh trượt xuống */
+            height: 4px; /* Đặt chiều cao cho thanh trượt */
+            border-radius: 5px; /* Bo tròn thanh trượt */
+            background: linear-gradient(to right, #db8ef1 0%, #808080 0%); /* Màu nền cho thanh trượt */
+            margin-left: -2px; /* Khoảng cách giữa loa và thanh trượt */
+            cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+        }
+
+            .volume-slider::-webkit-slider-thumb {
+                -webkit-appearance: none; /* Xóa kiểu mặc định của nút kéo */
+                width: 15px; /* Đặt kích thước cho nút kéo */
+                height: 15px; /* Đặt kích thước cho nút kéo */
+                border-radius: 50%; /* Bo tròn nút kéo */
+                background-color: #db8ef1; /* Màu nút kéo */
+                cursor: pointer; /* Hiệu ứng con trỏ khi di chuột */
+            }
+
+            /* Thêm sự kiện input để thay đổi màu thanh trượt */
+            .volume-slider:focus {
+                outline: none; /* Xóa viền khi thanh trượt được chọn */
+            }
+
+            .volume-slider::-webkit-slider-thumb:hover {
+                background-color: #b970d8; /* Màu khi hover trên nút kéo */
+            }
+
+
+        @@keyframes scroll {
+            0% {
+                transform: translateX(0); /* Bắt đầu từ vị trí ban đầu */
+            }
+
+            100% {
+                transform: translateX(calc(-100%)); /* Kết thúc ở vị trí 100% bên trái */
+            }
+        }
+
+        @@keyframes pulse {
+            0% {
+                transform: scale(1); /* Bắt đầu với kích thước bình thường */
+            }
+
+            50% {
+                transform: scale(1.1); /* Tăng kích thước lên một chút */
+            }
+
+            100% {
+                transform: scale(1); /* Quay lại kích thước ban đầu */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <div class="menu-left">
+            <img src="~/Images/logo.png" alt="Spotify Logo" class="logo" />
+
+        </div>
+        <div class="menu-center">
+            <div class="home-icon">
+                <i class="fas fa-home"></i> <!-- Icon ngôi nhà riêng -->
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="What do you want to play?" />
+            </div>
+        </div>
+        <div class="menu-right">
+            @if (Session["TaiKhoan"] != null)
+            {
+                <button class="explore-btn">Explore Premium</button>
+                <button class="install-btn">
+                    <i class="fas fa-download"></i> <!-- Biểu tượng tải xuống -->
+                    Install App
+                </button>
+                <div class="notification-bell">
+                    <i class="fas fa-bell"></i> <!-- Biểu tượng chuông thông báo -->
+                </div>
+                <div class="profile-container">
+                    <img src="@Url.Content("~/Images/" + Session["HinhAnh"])" alt="Profile Picture" class="profile-pic" id="profilePic" />
+
+                    <!-- Dropdown menu -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="@Url.Action("Profile", "Account")">Profile</a>
+                        <hr class="divider">
+                        <a href="@Url.Action("Logout", "SignInUp")">Log Out</a>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <a style="font-size:16px" href="@Url.Action("SignUp", "SignInUp")" class="explore-btn">Sign Up</a>
+                <a style="font-size:16px" href="@Url.Action("Login", "SignInUp")" class="install-btn">
+                    Log In
+                </a>
+                <img src="@Url.Content("~/Images/default-avatar.jpg")" alt="Default Avatar" class="profile-pic" />
+            }
+
+        </div>
+
+    </div>
+
+
+
+
+    <div class="container">
+        <div class="left">
+            <div class="library-header">
+                <img src="~/Images/icons/music-library.png" alt="Library" class="library-image" />
+                <span class="library-title">Your Library</span>
+                <img src="~/Images/icons/add.png" alt="Add" class="add-icon" />
+                <img src="~/Images/icons/arrow_right.png" alt="Arrow Right" class="arrow-right" />
+            </div>
+
+            <div class="playlist-container">
+                <span class="playlist-text">Playlists</span>
+            </div>
+
+            <div class="search-section">
+                <input type="text" placeholder="Search" class="search-box" />
+                <span class="recents-text">Recents</span>
+                <img src="~/Images/icons/recent.png" alt="Recent" class="list-icon" />
+            </div>
+
+            <div class="playlist-item">
+                <img src="~/Images/liked-songs.png" alt="Liked Songs" class="playlist-image" />
+                <div class="playlist-info">
+                    <h3>Liked Songs</h3>
+                    <p>Playlist • 4 songs</p>
+                </div>
+            </div>
+            <!-- Thêm nhiều mục playlist khác tương tự ở đây -->
+        </div>
+        <div class="right">
+
+
+
+
+            @RenderBody()  <!-- Đảm bảo giữ lại phần này -->
+        </div>
+    </div>
+
+
+
+    <div class="footer">
+        <div class="footer-left">
+            <img src="~/Images/kpkg.jpg" alt="Album Cover" class="album-cover" />
+            <div class="footer-song-info">
+                <div class="scrolling-text song-title">
+                    KIM PHÚT KIM GIỜ(feat.HURRYKNG, HIEUTHUHAI, Negav, Pháp Kiều & Isaac)
+                    <span class="space"></span>
+                    KIM PHÚT KIM GIỜ(feat.HURRYKNG, HIEUTHUHAI, Negav, Pháp Kiều & Isaac)
+                </div>
+                <div class="artist-names">
+                    ANH TRAI "SAY HI", HURRYKNG, HIEUTHUHAI, Negav, Pháp Kiều, Isaac
+                </div>
+            </div>
+        </div>
+        <div class="footer-center">
+            <div class="controls">
+                <img src="~/Images/icons/shuffle.png" alt="Shuffle" class="control-btn" />
+                <img src="~/Images/icons/previous.png" alt="Prev" class="control-btn" />
+                <img style="width:35px;height:35px;margin-top:-5px" src="~/Images/icons/play-button.png" alt="Play" class="control-btn" />
+                <img src="~/Images/icons/next.png" alt="Next" class="control-btn" />
+                <img src="~/Images/icons/loop.png" alt="Loop" class="control-btn" />
+
+            </div>
+            <div class="progress">
+                <span class="current-time">0:00</span>
+                <input type="range" class="progress-bar" value="00" max="316" />
+                <span class="duration">5:16</span>
+            </div>
+        </div>
+        <div class="footer-right">
+            <img src="~/Images/icons/music.png" alt="Music" class="footer-icon" />
+            <img src="~/Images/icons/lyrics.png" alt="Lyrics" class="footer-icon" />
+            <img src="~/Images/icons/list.png" alt="List" class="footer-icon" />
+            <img src="~/Images/icons/link-to-device.png" alt="List" class="footer-icon" />
+            <img src="~/Images/icons/medium-volume.png" alt="Medium Volume" class="footer-icon" />
+            <input type="range" class="volume-slider" min="0" max="100" value="50" />
+            <img src="~/Images/icons/fullscreen.png" alt="MiniScreen" class="footer-icon" />
+            <img src="~/Images/icons/maximize.png" alt="Maximize" class="footer-icon" />
+        </div>
+    </div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var elements = document.querySelectorAll('.scrolling-text');
+
+            elements.forEach(function (element) {
+                var parentWidth = element.parentElement.offsetWidth;
+                var textWidth = element.scrollWidth;
+
+                // Kiểm tra nếu chiều rộng nội dung lớn hơn container, thì bắt đầu cuộn
+                if (textWidth > parentWidth) {
+                    var animationSpeed = (textWidth / 100) * 5; // Điều chỉnh tốc độ cuộn
+
+                    // Đặt thời gian chạy của animation
+                    element.style.animationDuration = `${animationSpeed}s`;
+
+                    // Tạm dừng khi hover (giữ vị trí hiện tại)
+                    element.parentElement.addEventListener('mouseover', function () {
+                        element.style.animationPlayState = 'paused'; // Dừng khi hover
+                    });
+
+                    // Tiếp tục cuộn khi rời khỏi hover
+                    element.parentElement.addEventListener('mouseout', function () {
+                        element.style.animationPlayState = 'running'; // Tiếp tục khi không hover
+                    });
+                }
+            });
+        });
+
+
+
+
+        // ----------------------------------Script chuyển màu --------------------------------
+
+        const progressBar = document.querySelector('.progress-bar');
+
+        // Cập nhật màu nền khi trang được tải
+        window.addEventListener('load', function () {
+            progressBar.style.background = 'linear-gradient(to right, #808080 0%, #808080 100%)'; // Màu xám khi bắt đầu
+        });
+
+        // Cập nhật màu khi kéo thanh
+        progressBar.addEventListener('input', function () {
+            const value = (this.value - this.min) / (this.max - this.min) * 100; // Tính toán % giá trị của thanh kéo
+            this.style.background = `linear-gradient(to right, #db8ef1 ${value}%, #808080 ${value}%)`; // Cập nhật màu nền
+        });
+
+
+        const volumeSlider = document.querySelector('.volume-slider');
+
+        // Hàm để cập nhật màu nền cho thanh trượt
+        function updateSliderBackground() {
+            const value = (volumeSlider.value - volumeSlider.min) / (volumeSlider.max - volumeSlider.min) * 100; // Tính toán % giá trị của thanh kéo
+            volumeSlider.style.background = `linear-gradient(to right, #db8ef1 ${value}%, #808080 ${value}%)`; // Cập nhật màu nền
+        }
+
+        // Cập nhật màu nền khi giá trị của thanh trượt thay đổi
+        volumeSlider.addEventListener('input', updateSliderBackground);
+
+        // Cập nhật màu nền khi trang được tải
+        updateSliderBackground(); // Gọi hàm để thiết lập màu sắc ban đầu
+
+
+
+        // ----------------------------------Script droplist--------------------------------
+
+        function toggleDropdown() {
+            var dropdown = document.getElementById("profile-dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // Ẩn menu nếu nhấp bên ngoài
+        window.onclick = function (event) {
+            if (!event.target.matches('.profile-pic')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const profilePic = document.getElementById('profilePic');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            // Khi nhấp vào hình ảnh profile, bật/tắt menu
+            profilePic.addEventListener('click', function () {
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Ẩn menu khi nhấp ra ngoài
+            window.addEventListener('click', function (e) {
+                if (!profilePic.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        });
+
+
+
+    </script>
+
+
+</body>
+</html>

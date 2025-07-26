@@ -1,0 +1,307 @@
+﻿@model MusicApp.Models.ProfileViewModel
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;1000&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+
+
+
+    <style>
+        .right {
+            width: 72%;
+            background-color: #121212; /* Màu nền cho khung phải */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex;
+            flex-direction: column; /* Bố cục theo cột */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+            overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+        }
+
+        .header {
+            position: relative;
+            padding: 115px 20px 20px 20px;
+            text-align: left;
+            border-radius: 10px 10px 0 0; /* Bo góc cho phần đầu */
+            box-shadow: 0 0 20px rgba(162, 120, 185, 0.5);
+            color: white; /* Đặt màu chữ thành trắng */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Màu tối với độ mờ 50% */
+            border-radius: 10px 10px 0 0; /* Bo góc để phù hợp với header */
+            z-index: 0; /* Đảm bảo lớp phủ nằm dưới nội dung */
+        }
+
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px; /* Kéo pseudo-element ra dưới */
+            left: 0;
+            top: 100%;
+            width: 100%;
+            height: 180px; /* Độ dày của bóng đổ */
+            border-radius: 0 0 10px 10px; /* Bo góc dưới để mượt hơn */
+            pointer-events: none;
+            background: linear-gradient(to bottom, var(--after-bg, rgba(162, 120, 185, 0.0000005)), rgba(162, 120, 185, 0)); /* Mờ dần từ trên xuống */
+        }
+
+        .header-content {
+            display: flex; /* Sử dụng Flexbox */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            position: relative; /* Để nội dung nằm trên lớp phủ */
+            z-index: 1; /* Đảm bảo nội dung hiển thị trên lớp phủ */
+        }
+
+        .profileAvatar-image {
+            width: 180px; /* Đặt kích thước cho hình ảnh */
+            height: 180px; /* Đảm bảo hình ảnh có tỷ lệ chính xác */
+            margin-right: 20px; /* Khoảng cách giữa hình ảnh và chữ */
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Thêm bóng đổ xung quanh hình ảnh */
+            object-fit: cover;
+        }
+
+        .profileAvatar-info h1 {
+            margin: 0; /* Bỏ khoảng cách cho tiêu đề */
+            font-family: "Montserrat", sans-serif;
+            font-size: 5em;
+            font-weight: 700; /* Sử dụng trọng số đậm */
+        }
+
+        .profileAvatar-info p {
+            margin: 3px 0; /* Khoảng cách cho các đoạn chữ */
+            font-family: "Montserrat", sans-serif;
+        }
+
+        .more-button {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            cursor: pointer; /* Thêm hiệu ứng con trỏ khi di chuột qua */
+        }
+
+            .more-button img {
+                width: 30px; /* Thay đổi kích thước theo ý muốn */
+                height: 30px; /* Điều chỉnh chiều cao nếu cần */
+                cursor: pointer; /* Thêm hiệu ứng con trỏ khi di chuột qua */
+                transition: filter 0.2s ease;
+            }
+
+            .add-button:hover img, .more-button:hover img {
+                filter: brightness(2) invert(1); /* Chuyển màu sang trắng khi hover */
+            }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%; /* Hiển thị bên dưới nút */
+            right: 0;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+            .dropdown-item:hover {
+                background-color: #f0f0f0;
+                color: #000;
+            }
+
+
+        .section-title {
+            font-size: 25px;
+            margin: 15px 0 -30px 20px;
+            font-weight: bold;
+            color: #ffffff; /* Màu trắng sáng */
+        }
+
+        .playlist-grid-container {
+            position: relative;
+            padding: 10px 5px 5px 0;
+            width: 100%; /* Full width of the screen */
+        }
+
+            .playlist-grid-container:hover .carousel-button {
+                opacity: 1; /* Show button on hover */
+            }
+
+        /* Flexbox for horizontal scrolling */
+        .playlist-grid {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Snap to playlist items when scrolling */
+            margin: 15px 0 0 0;
+        }
+
+            /* Hide horizontal scrollbar if not needed */
+            .playlist-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+        .playlist-card.circular img {
+            width: 154px; /* Điều chỉnh kích thước theo ý bạn */
+            height: 154px;
+            border-radius: 50%; /* Biến ảnh thành hình tròn */
+            object-fit: cover; /* Đảm bảo ảnh lấp đầy hình tròn */
+        }
+
+        .playlist-card.circular {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            gap: 10px;
+            padding: 10px 15px 10px 15px;
+        }
+
+            .playlist-card.circular:hover {
+                background-color: rgb(38, 38, 38);
+            }
+
+    </style>
+    <title>Profile</title>
+
+</head>
+
+<body style="font-family:Roboto">
+    <div class="header">
+        <div class="header-content">
+            <img src="@Url.Content("~/Images/" + Model.User.HinhAnh)" alt="Profile Image" class="profileAvatar-image" />
+            <div class="profileAvatar-info">
+                <p>Profile</p>
+                <h1>@Model.User.TaiKhoan</h1>
+                <p style="color: #cccccc ">
+                    @Model.User.Email
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="more-button">
+        <a href="@Url.Action("EditProfile", "Accounts")">
+            <img src="~/Images/icons/more.png" alt="More Button" />
+        </a>
+    </div>
+
+
+    <h2 class="section-title">Top artists this month</h2>
+    <p style="color: #cccccc; font-size:1em " class="section-title">Only visible to you</p>
+    <div class="playlist-grid-container" data-type="top-mixes">
+        <div class="playlist-grid">
+            @foreach (var artist in Model.TopArtists)
+            {
+                <a href="@Url.Action("SingerDetail", "Home", new { id = artist.Ma_Ca_Si })" class="singer-link" style="text-decoration: none; color: inherit;">
+                    <div class="playlist-card circular">
+                        <img src="@artist.HinhAnh" alt="@artist.Ten_Ca_Si" /> <!-- Placeholder image, you can customize -->
+                        <span>@artist.Ten_Ca_Si</span>
+                        <span style="color:darkgrey">Artist</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <script>
+        //------------------- Script lấy màu pixel ------------------
+        // Hàm để lấy màu sắc từ hình ảnh
+        function getAverageColor(imageUrl) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.src = imageUrl;
+
+                img.onload = () => {
+                    // Tạo canvas để lấy pixel
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    // Lấy pixel dữ liệu từ canvas
+                    const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = data.data;
+
+                    // Tính trung bình màu
+                    let r = 0, g = 0, b = 0;
+                    const pixelCount = pixels.length / 4; // Mỗi pixel có 4 giá trị (RGBA)
+                    for (let i = 0; i < pixels.length; i += 4) {
+                        r += pixels[i];     // R
+                        g += pixels[i + 1]; // G
+                        b += pixels[i + 2]; // B
+                    }
+                    r = Math.floor(r / pixelCount);
+                    g = Math.floor(g / pixelCount);
+                    b = Math.floor(b / pixelCount);
+
+                    // Trả về màu trung bình
+                    resolve({ r, g, b });
+                };
+
+                img.onerror = (error) => {
+                    reject(error);
+                };
+            });
+        }
+
+
+
+        // Lấy hình ảnh từ DOM
+        const imageUrl = document.querySelector('.profileAvatar-image').src;
+
+        // Gọi hàm để lấy màu sắc và cập nhật header
+        getAverageColor(imageUrl).then(color => {
+            const header = document.querySelector('.header');
+            const rgbaColor = `rgba(${color.r}, ${color.g}, ${color.b}, 0.8)`; // Đặt alpha cho màu
+
+            // Cập nhật màu nền của header
+            header.style.backgroundColor = rgbaColor;
+
+            // Cập nhật màu bóng đổ (nếu sử dụng biến CSS)
+            header.style.setProperty('--after-bg', rgbaColor);
+        }).catch(error => {
+            console.error("Không thể lấy màu sắc từ hình ảnh:", error);
+        });
+
+
+
+    </script>
+
+</body>
+

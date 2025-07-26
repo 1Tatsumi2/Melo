@@ -1,0 +1,173 @@
+﻿@model IEnumerable<MusicApp.Models.Song>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <style>
+        .table-playlist {
+            overflow: hidden; /* Ẩn nội dung tràn */
+            white-space: nowrap; /* Ngăn nội dung xuống dòng */
+        }
+        .playlist-container {
+            display: flex; /* Sử dụng Flexbox */
+            flex-wrap: wrap; /* Cho phép các phần tử xuống dòng */
+            margin: 5px 0; /* Thêm khoảng cách giữa các hàng */
+        }
+
+        .playlist-item {
+            flex: 0 1 calc(33.33% - 10px); /* Mỗi nút chiếm 1/3 chiều rộng */
+            margin: 5px; /* Khoảng cách giữa các nút */
+            text-align: center; /* Căn giữa văn bản */
+        }
+
+    </style>
+</head>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Ten_Bai_Hat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Thoi_Luong)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().HinhAnh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().MP3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Video)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Album.Ten_Album)
+        </th>
+       
+        <th>
+            Singers <!-- Tiêu đề tùy chỉnh cho Singers -->
+        </th>
+        <th class="table-playlist">
+            PlayLists <!-- Tiêu đề tùy chỉnh cho PlayLists -->
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten_Bai_Hat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Thoi_Luong)
+            </td>
+            <td>
+                <img src="@item.HinhAnh" alt="Song Image" style="width:100px; height:100px; object-fit:cover" />
+            </td>
+            <td>
+                <!-- Hiển thị MP3 -->
+                @if (!string.IsNullOrEmpty(item.MP3))
+                {
+                    <audio controls>
+                        <source src="@item.MP3" type="audio/mpeg">
+                        Your browser does not support the audio tag.
+                    </audio>
+                }
+                else
+                {
+                    <span>No audio available</span>
+                }
+            </td>
+            <td>
+                <!-- Hiển thị video -->
+                @if (!string.IsNullOrEmpty(item.Video))
+                {
+                    <video width="320" height="240" controls>
+                        <source src="@item.Video" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                }
+                else
+                {
+                    <span>No video available</span>
+                }
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Album.Ten_Album)
+            </td>
+            
+            <td class="table-singers">
+                <!-- Hiển thị danh sách các ca sĩ -->
+                @if (item.Singer_Song != null && item.Singer_Song.Count > 0)
+                {
+                    <div class="singer-container" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        @foreach (var singerSong in item.Singer_Song)
+                        {
+                            <div class="singer-item" style="display: flex; align-items: center;">
+                                <span style="margin-right: 5px;">
+                                    @Html.DisplayFor(m => singerSong.Singer.Ten_Ca_Si)
+                                </span>
+                                <!-- Nút Remove from Singer -->
+                                @Html.ActionLink("Remove", "RemoveSingerFromSong",
+                                new { songId = item.Ma_Bai_Hat, singerId = singerSong.Singer.Ma_Ca_Si },
+                                new { @class = "btn btn-danger btn-sm" })
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <span>No singers available</span>
+                }
+            </td>
+
+            <td class="table-playlist">
+                <!-- Hiển thị danh sách các playlist mà bài hát thuộc về -->
+                @if (item.Song_Play != null && item.Song_Play.Count > 0)
+                {
+                    <div class="playlist-container" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        @foreach (var songPlay in item.Song_Play)
+                        {
+                            <div class="playlist-item" style="display: flex; align-items: center;">
+                                <span style="margin-right: 5px;">
+                                    @Html.DisplayFor(m => songPlay.PlayList.Ten_PlayList)
+                                </span>
+                                <!-- Nút Remove from Playlist -->
+                                @Html.ActionLink("Remove", "RemoveFromPlaylist",
+                                new { songId = item.Ma_Bai_Hat, playlistId = songPlay.PlayList.Ma_PlayList },
+                                new { @class = "btn btn-danger btn-sm" })
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <span>No playlists available</span>
+                }
+            </td>
+
+
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Ma_Bai_Hat })
+                @Html.ActionLink("Details", "Details", new { id = item.Ma_Bai_Hat })
+                @Html.ActionLink("Delete", "Delete", new { id = item.Ma_Bai_Hat })
+                @Html.ActionLink("Add PlayList", "Add", new { Ma_Bai_Hat = item.Ma_Bai_Hat }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Add Singer", "AddSinger", new { Ma_Bai_Hat = item.Ma_Bai_Hat }, new { @class = "btn btn-primary" })
+
+
+            </td>
+        </tr>
+    }
+
+</table>

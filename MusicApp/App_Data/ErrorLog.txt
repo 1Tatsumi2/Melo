@@ -1,0 +1,36 @@
+Token trong session không tồn tại.
+Token trong session không tồn tại.
+Token trong session không tồn tại.
+Token trong session không tồn tại.
+Token khớp: 30b17aae-d330-439d-a076-21d055ee4550
+Lỗi khi cập nhật mật khẩu: System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at MusicApp.Controllers.SignInUpController.ResetPasswordConfirm(String token, String newPassword) in D:\DoAnPhanMem\MusicApp\MusicApp\Controllers\SignInUpController.cs:line 253
+Token khớp: 30b17aae-d330-439d-a076-21d055ee4550
+Token khớp: d57e1754-0f74-4089-99d4-f38ae3be9634
+Đã cập nhật mật khẩu thành công cho email: tranthuong12122004@gmail.com
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token khớp: 97961204-252b-4975-b1ff-e4353df3d786
+Token trong session không tồn tại.
+Token trong session không tồn tại.
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 6c987708-a57c-413f-8bc6-20dec78dc06e
+Token khớp: 85e96b2c-6051-49a4-b449-c8a9187ed594
+Token khớp: d642e062-5fc6-4304-af11-79888da82735
+Token khớp: d642e062-5fc6-4304-af11-79888da82735

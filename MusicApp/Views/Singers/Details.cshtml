@@ -1,0 +1,57 @@
+﻿@model MusicApp.Models.Singer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Singer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ten_Ca_Si)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ten_Ca_Si)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ngay_Sinh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ngay_Sinh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HinhAnh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HinhAnh)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.HinhAnh2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HinhAnh2)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Ma_Ca_Si }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

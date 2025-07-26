@@ -1,0 +1,402 @@
+﻿@model MusicApp.Models.SearchResultsViewModel
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_MasterLayout.cshtml";
+}
+
+<head>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Đặt chiều cao của body */
+            background-color: #f0f0f0; /* Màu nền cho toàn bộ trang */
+        }
+
+        .right {
+            width: 72%;
+            background-color: #121212; /* Màu nền cho khung phải */
+            color: white;
+            height: 580px; /* Chiều cao cố định */
+            border-radius: 15px; /* Bo góc khung */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Hiệu ứng bóng mờ */
+            display: flex;
+            flex-direction: column; /* Bố cục theo cột */
+            gap: 20px; /* Khoảng cách giữa các phần tử */
+            overflow-y: auto; /* Cuộn dọc nếu nội dung vượt quá */
+        }
+
+        .main-header {
+            display: flex; /* Sử dụng Flexbox để tạo hàng */
+            flex-direction: column; /* Đặt hướng thành cột */
+            align-items: flex-start; /* Căn trái cho các phần tử */
+            gap: 15px;
+        }
+        /* Phần tiêu đề và các nút lọc */
+        .header {
+            padding: 15px 0px 0px 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            background-color: #333333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .filter-btn.active {
+                background-color: white;
+                color: black;
+            }
+
+            .filter-btn:hover {
+                background-color: #808080;
+            }
+
+        .wrapper {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .new-left, .new-right {
+            border-radius: 5px;
+            height: 200px;
+            display: flex;
+            flex-direction: column; /* Đặt các phần tử theo chiều dọc */
+        }
+
+        .new-left {
+            flex: 4;
+            background-color: #1e1e1e;
+            color: white;
+            padding: 15px 0 10px 15px;
+            transition: background-color 0.3s ease;
+        }
+
+            .new-left:hover {
+                background-color: #333333;
+            }
+
+        .new-right {
+            flex: 6;
+            background-color: transparent;
+            color: white;
+        }
+
+        .song-row {
+            display: flex; /* Sắp xếp các phần tử bên trong hàng ngang */
+            align-items: center; /* Căn giữa theo chiều dọc */
+            padding: 4px;
+        }
+
+            .song-row:hover {
+                background-color: #333333;
+            }
+
+                .song-row:hover .artist-nameSearch2 {
+                    color: white !important;
+                }
+
+        .play-icon {
+            display: none; /* Ẩn mũi tên mặc định */
+            color: white; /* Màu mũi tên */
+            font-size: 1.2em; /* Kích thước mũi tên */
+            position: absolute; /* Định vị mũi tên */
+            right: 0;
+            top: 50%; /* Giữa hàng */
+            transform: translateY(-50%); /* Căn giữa mũi tên theo chiều dọc */
+            cursor: default;
+        }
+
+        .song-row:hover .play-icon {
+            display: inline; /* Hiện biểu tượng mũi tên khi hover */
+        }
+
+
+        .song-imageSearch2 {
+            width: 40px; /* Kích thước hình ảnh */
+            height: 40px; /* Kích thước hình ảnh */
+            border-radius: 5px; /* Bo tròn các góc của hình ảnh */
+            margin-right: 10px; /* Khoảng cách giữa hình ảnh và thông tin bài hát */
+            object-fit: cover;
+        }
+
+        .song-titleSearch2 {
+            font-size: 1em; /* Kích thước chữ cho tên bài hát */
+            color: white; /* Màu chữ trắng */
+            font-weight: bold;
+        }
+
+        .song-info {
+            flex-grow: 1; /* Để thông tin bài hát chiếm không gian còn lại */
+        }
+
+        .artist-nameSearch2 {
+            font-size: 0.8em; /* Kích thước chữ cho tên ca sĩ */
+            color: #b3b3b3; /* Màu chữ xám cho tên ca sĩ */
+            margin-top: 5px; /* Khoảng cách giữa tên bài hát và tên ca sĩ */
+            font-weight: bold;
+        }
+
+        .duration-nameSearch2 {
+            font-size: 1em; /* Kích thước chữ cho thời gian */
+            color: #b3b3b3; /* Màu chữ xám cho thời gian */
+            min-width: 60px; /* Đảm bảo thời gian có chiều rộng tối thiểu */
+            margin-left: auto;
+        }
+
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-left: 5px; /* Cách lề trái 5px */
+        }
+
+        .song-imageSearch {
+            width: 100px; /* Để hình ảnh chiếm toàn bộ chiều rộng của khung */
+            height: 100px;
+            border-radius: 10px; /* Bo tròn các góc của hình ảnh */
+            object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+        }
+
+        .song-titleSearch {
+            font-size: 1.9em;
+            margin-top: 16.5px; /* Khoảng cách giữa các phần tử */
+            text-align: left; /* Căn trái cho văn bản */
+            color: white; /* Màu chữ trắng */
+            font-weight: bold
+        }
+
+        .artist-nameSearch {
+            margin-top: 5px; /* Khoảng cách giữa các phần tử */
+            text-align: left; /* Căn trái cho văn bản */
+            color: white; /* Màu chữ trắng */
+            font-weight: bold
+        }
+
+        .section-title {
+            font-size: 25px;
+            margin: 15px 0 -30px 20px;
+            font-weight: bold;
+        }
+
+        .playlist-grid-container {
+            position: relative;
+            padding: 10px 5px 5px 0;
+            width: 100%; /* Full width of the screen */
+        }
+
+            .playlist-grid-container:hover .carousel-button {
+                opacity: 1; /* Show button on hover */
+            }
+
+        /* Flexbox for horizontal scrolling */
+        .playlist-grid {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling */
+            scroll-snap-type: x mandatory; /* Snap to playlist items when scrolling */
+            margin: 15px 0 0 0;
+        }
+
+            /* Hide horizontal scrollbar if not needed */
+            .playlist-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+        /* Playlist card design */
+        .playlist-card.large {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            gap: 15px; /* Space between elements */
+            padding: 10px 15px; /* Padding inside the card */
+            max-width: 200px; /* Set a maximum width to prevent stretching */
+            max-height: 238px; /* Set a maximum width to prevent stretching */
+        }
+
+            .playlist-card.large .content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start; /* Văn bản nằm bên trái */
+                overflow: hidden;
+                text-overflow: ellipsis; /* Show ellipsis for overflowed text (optional) */
+            }
+
+                .playlist-card.large .content span {
+                    display: block; /* Make title a block element */
+                    white-space: normal; /* Allow text to wrap */
+                    overflow: hidden; /* Hide overflow text */
+                    text-overflow: ellipsis; /* Show ellipsis for overflowed text (optional) */
+                    max-width: 154px; /* Đảm bảo văn bản không vượt quá chiều rộng của ảnh */
+                    max-height: 2em; /* Limit height to 3 lines (adjust as needed) */
+                    line-height: 1em; /* Set line height for better readability */
+                }
+
+        /* Optional: Add a small margin to the bottom of the title for better spacing */
+        .playlist-card span {
+            margin-bottom: 5px;
+        }
+
+        .playlist-card.large:hover {
+            background-color: rgb(38, 38, 38); /* Change background on hover */
+            transition: background-color 0.3s;
+        }
+
+        /* Image styling within playlist cards */
+        .playlist-card.large img {
+            width: 154px; /* Set width of the image */
+            height: 154px; /* Set height of the image */
+            object-fit: cover; /* Maintain aspect ratio while filling */
+            border-radius: 8px; /* Round the corners of the image */
+        }
+
+
+        .playlist-card.circular img {
+            width: 154px; /* Điều chỉnh kích thước theo ý bạn */
+            height: 154px;
+            border-radius: 50%; /* Biến ảnh thành hình tròn */
+            object-fit: cover; /* Đảm bảo ảnh lấp đầy hình tròn */
+        }
+
+        .playlist-card.circular {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            gap: 10px;
+            padding: 10px 15px 10px 15px;
+        }
+
+            .playlist-card.circular:hover {
+                background-color: rgb(38, 38, 38);
+            }
+
+
+        /* Nút điều hướng trái/phải */
+        
+    </style>
+</head>
+
+<body style="font-family:Roboto">
+    <div class="main-header">
+        <div class="header">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">Songs</button>
+            <button class="filter-btn">Albums</button>
+            <button class="filter-btn">Playlists</button>
+            <button class="filter-btn">Artists</button>
+            <button class="filter-btn">Podcasts & Shows</button>
+
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Khung bên trái với tiêu đề "Top Result" -->
+        <div style="flex: 4; display: flex; flex-direction: column;height:230px">
+            <div class="title">Top Result</div>
+            @if (Model.TopResult != null)
+            {
+                <div class="new-left">
+                    <img src="@Model.TopResult.HinhAnh" alt="Song Image Search" class="song-imageSearch">
+                    <div class="song-titleSearch">@Model.TopResult.Ten_Bai_Hat</div>
+                    <div class="artist-nameSearch">Song • @string.Join(", ", Model.TopResult.Singer_Song.Select(s => s.Singer.Ten_Ca_Si))</div>
+                </div>
+            }
+            else
+            {
+                <div class="new-left">No results found</div>
+            }
+        </div>
+
+
+        <!-- Khung bên phải với tiêu đề "Songs" -->
+        <div style="flex: 6; display: flex; flex-direction: column; height: 230px">
+            <div class="title">Songs</div>
+            <div class="new-right">
+                @if (Model.Songs != null && Model.Songs.Any())
+                {
+                    var additionalSongs = Model.Songs.Take(3); // Lấy 3 bài hát tiếp theo sau bài hát đầu tiên
+                    foreach (var song in additionalSongs)
+                    {
+                        <div class="song-row">
+                            <img src="@song.HinhAnh" alt="Hình ảnh bài hát" class="song-imageSearch2">
+                            <div class="song-info2">
+                                <div class="song-titleSearch2">@song.Ten_Bai_Hat</div>
+                                <div class="artist-nameSearch2">@string.Join(", ", song.Singer_Song.Select(s => s.Singer.Ten_Ca_Si))</div>
+                            </div>
+                            <div class="duration-nameSearch2">@song.Thoi_Luong.ToString(@"hh\:mm")</div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div>No songs found</div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    <h2 class="section-title">Artists</h2>
+    <div class="playlist-grid-container" data-type="top-mixes">
+            <div class="playlist-grid">
+                @foreach (var artistName in Model.ArtistNames)
+                {
+                    <a href="@Url.Action("SingerDetail", "Home", new { id = artistName.Ma_Ca_Si })" class="singer-link" style="text-decoration: none; color: inherit;">
+                        <div class="playlist-card circular">
+                            <img src="@artistName.HinhAnh" alt="@artistName.Ten_Ca_Si" /> <!-- Placeholder image, you can customize -->
+                            <span>@artistName.Ten_Ca_Si</span>
+                            <span style="color:darkgrey">Artist</span>
+                        </div>
+                    </a>
+                }
+            </div>
+    </div>
+
+
+    <h2 class="section-title">Albums</h2>
+    <div class="playlist-grid-container" data-type="top-mixes">
+        <div class="playlist-grid">
+            @foreach (var album in Model.Albums)
+            {
+                <a href="@Url.Action("AlbumDetail", "Home", new { id = album.Ma_Album })" class="album-link" style="text-decoration: none; color: inherit;">
+                    <div class="playlist-card large">
+                        <img src="@Url.Content(album.HinhAnh)" alt="@album.Ten_Album" />
+                        <div class="content">
+                            <span>@album.Ten_Album</span>
+                            <span style="color:grey; font-size:14px">@album.Ngay_Phat_Hanh.ToString("yyyy") • @album.Ten_Ca_Si</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+
+    </div>
+
+
+    <h2 class="section-title">Playlists</h2>
+    <div class="playlist-grid-container" data-type="top-mixes">
+        <div class="playlist-grid">
+            @foreach (var playlist in Model.Playlists)
+            {
+                <a href="@Url.Action("PlayListDetail", "Home", new { id = playlist.Ma_PlayList })" class="playlist-link" style="text-decoration: none; color: inherit;">
+                    <div class="playlist-card large">
+                        <img src="@Url.Content(playlist.HinhAnh)" alt="@playlist.Ten_PlayList" />
+                        <div class="content">
+                            <span>@playlist.Ten_PlayList</span>
+                            <span style="color:grey; font-size:14px"> By @playlist.Ten_User</span>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+</body>
